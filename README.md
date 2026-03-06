@@ -1,14 +1,14 @@
-# GITPUSH - Git Made Easy 🚀
+# RUN-GIT - Git Made Easy 🚀
 
 ```
 ╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮
 ┃                                                                    ┃
-┃    ██████╗ ██╗████████╗██████╗ ██╗   ██╗███████╗██╗  ██╗         ┃
-┃   ██╔════╝ ██║╚══██╔══╝██╔══██╗██║   ██║██╔════╝██║  ██║         ┃
-┃   ██║  ███╗██║   ██║   ██████╔╝██║   ██║███████╗███████║         ┃
-┃   ██║   ██║██║   ██║   ██╔═══╝ ██║   ██║╚════██║██╔══██║         ┃
-┃   ╚██████╔╝██║   ██║   ██║     ╚██████╔╝███████║██║  ██║         ┃
-┃    ╚═════╝ ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝  ╚═╝         ┃
+┃    ██████╗ ██╗   ██╗███╗   ██╗      ██████╗ ██╗████████╗         ┃
+┃    ██╔══██╗██║   ██║████╗  ██║     ██╔════╝ ██║╚══██╔══╝         ┃
+┃    ██████╔╝██║   ██║██╔██╗ ██║     ██║  ███╗██║   ██║            ┃
+┃    ██╔══██╗██║   ██║██║╚██╗██║     ██║   ██║██║   ██║            ┃
+┃    ██║  ██║╚██████╔╝██║ ╚████║     ╚██████╔╝██║   ██║            ┃
+┃    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝      ╚═════╝ ╚═╝   ╚═╝            ┃
 ┃                                                                    ┃
 ┃   ═══════════════════════════════════════════════════════════     ┃
 ┃                                                                    ┃
@@ -23,19 +23,19 @@
 ┃   │  License      : MIT                                      │   ┃
 ┃   └──────────────────────────────────────────────────────────┘   ┃
 ┃                                                                    ┃
-┃   Type 'gitpush help' to get started                              ┃
+┃   Type 'run-git help' to get started                              ┃
 ┃                                                                    ┃
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 ```
 
-[![PyPI version](https://badge.fury.io/py/gitpush.svg)](https://badge.fury.io/py/gitpush)
+[![PyPI version](https://badge.fury.io/py/run-git.svg)](https://badge.fury.io/py/run-git)
 [![Tests](https://github.com/himanshu231204/gitpush/workflows/Tests/badge.svg)](https://github.com/himanshu231204/gitpush/actions)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **One Command To Rule Them All**
 
-GITPUSH is the ultimate Git automation tool designed to make Git operations effortless for developers of all skill levels. Say goodbye to complex Git commands and hello to simplicity!
+RUN-GIT is the ultimate Git automation tool designed to make Git operations effortless for developers of all skill levels. Say goodbye to complex Git commands and hello to simplicity!
 
 Created by **Himanshu Kumar** ([@himanshu231204](https://github.com/himanshu231204))
 
@@ -56,7 +56,7 @@ Created by **Himanshu Kumar** ([@himanshu231204](https://github.com/himanshu2312
 ## 📦 Installation
 
 ```bash
-pip install gitpush
+pip install run-git
 ```
 
 ---
@@ -66,25 +66,25 @@ pip install gitpush
 ### 1. Initialize Repository
 ```bash
 # New repository
-gitpush init
+run-git init
 
 # Clone existing repository
-gitpush init https://github.com/user/repo.git
+run-git init https://github.com/user/repo.git
 ```
 
 ### 2. Quick Push (Most Common Use Case)
 ```bash
 # Add, commit, pull, and push in one command!
-gitpush push
+run-git push
 
 # With custom commit message
-gitpush push -m "Add new feature"
+run-git push -m "Add new feature"
 ```
 
 ### 3. Interactive Mode
 ```bash
-# Just type gitpush for interactive menu
-gitpush
+# Just type run-git for interactive menu
+run-git
 ```
 
 ---
@@ -95,36 +95,36 @@ gitpush
 
 ```bash
 # Push changes
-gitpush push
+run-git push
 
 # View status
-gitpush status
+run-git status
 
 # View commit history
-gitpush log
+run-git log
 
 # Branch operations
-gitpush branch              # List branches
-gitpush branch feature-x    # Create branch
-gitpush switch main         # Switch branch
-gitpush merge feature-x     # Merge branch
+run-git branch              # List branches
+run-git branch feature-x    # Create branch
+run-git switch main         # Switch branch
+run-git merge feature-x     # Merge branch
 
 # Remote management
-gitpush remote              # Show remotes
-gitpush remote origin --add https://github.com/user/repo.git
+run-git remote              # Show remotes
+run-git remote origin --add https://github.com/user/repo.git
 
 # Advanced
-gitpush pull                # Pull changes
-gitpush sync                # Pull + Push
-gitpush stash               # Stash changes
-gitpush undo                # Undo last commit
+run-git pull                # Pull changes
+run-git sync                # Pull + Push
+run-git stash               # Stash changes
+run-git undo                # Undo last commit
 ```
 
 ---
 
 ## 🤖 Auto Commit Messages
 
-GITPUSH generates intelligent commit messages based on your changes:
+RUN-GIT generates intelligent commit messages based on your changes:
 
 - `feat: add authentication module (3 added)`
 - `fix: update user validation (2 modified)`
@@ -151,21 +151,21 @@ GITPUSH generates intelligent commit messages based on your changes:
 
 | Command | Description |
 |---------|-------------|
-| `gitpush` | Interactive mode |
-| `gitpush push` | Quick push (add, commit, pull, push) |
-| `gitpush init` | Initialize repository |
-| `gitpush status` | Show repository status |
-| `gitpush log` | Show commit history |
-| `gitpush branch` | List branches |
-| `gitpush switch <n>` | Switch branch |
-| `gitpush merge <n>` | Merge branch |
-| `gitpush remote` | Show remotes |
-| `gitpush pull` | Pull changes |
-| `gitpush sync` | Pull and push |
-| `gitpush stash` | Stash changes |
-| `gitpush undo` | Undo last commit |
-| `gitpush --help` | Show help |
-| `gitpush --version` | Show version |
+| `run-git` | Interactive mode |
+| `run-git push` | Quick push (add, commit, pull, push) |
+| `run-git init` | Initialize repository |
+| `run-git status` | Show repository status |
+| `run-git log` | Show commit history |
+| `run-git branch` | List branches |
+| `run-git switch <name>` | Switch branch |
+| `run-git merge <name>` | Merge branch |
+| `run-git remote` | Show remotes |
+| `run-git pull` | Pull changes |
+| `run-git sync` | Pull and push |
+| `run-git stash` | Stash changes |
+| `run-git undo` | Undo last commit |
+| `run-git --help` | Show help |
+| `run-git --version` | Show version |
 
 ---
 
@@ -191,7 +191,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🌟 Show Your Support
 
-If you find GITPUSH helpful, please:
+If you find RUN-GIT helpful, please:
 - ⭐ Star the repository
 - 🐛 Report bugs
 - 💡 Suggest new features
@@ -199,7 +199,7 @@ If you find GITPUSH helpful, please:
 
 ---
 
-## 📊 Why GITPUSH?
+## 📊 Why RUN-GIT?
 
 ### The Problem
 Git is powerful but complex. Beginners struggle with:
@@ -209,7 +209,7 @@ Git is powerful but complex. Beginners struggle with:
 - Managing branches
 
 ### The Solution
-GITPUSH provides:
+RUN-GIT provides:
 - ✅ One command for common workflows
 - ✅ Interactive conflict resolution
 - ✅ Auto-generated commit messages
