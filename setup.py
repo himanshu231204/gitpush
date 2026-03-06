@@ -7,7 +7,7 @@ setup(
     name="run-git",
     version="1.0.0",
     author="Himanshu Kumar",
-    author_email="himanshu231204@gmail.com",
+    author_email="",
     description="Git Made Easy - One Command To Rule Them All",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -35,9 +35,15 @@ setup(
         "pyyaml>=6.0",
         "requests>=2.28.0",
     ],
+    extras_require={
+        "test": [
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+        ],
+    },
     entry_points={
         "console_scripts": [
-            "gitpush=gitpush.cli:main",
+            "run-git=gitpush.cli:main",
         ],
     },
     include_package_data=True,
