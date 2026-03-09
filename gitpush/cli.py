@@ -1,5 +1,5 @@
 """
-Main CLI interface for gitpush
+Main CLI interface for run-git
 """
 import click
 import os
@@ -15,9 +15,9 @@ from gitpush import __version__
 @click.pass_context
 @click.option('--version', '-v', is_flag=True, help='Show version')
 def main(ctx, version):
-    """gitpush - Git Made Easy"""
+    """run-git - Git Made Easy"""
     if version:
-        click.echo(f"gitpush version {__version__}")
+        click.echo(f"run-git version {__version__}")
         return
     
     if ctx.invoked_subcommand is None:
@@ -35,7 +35,7 @@ def interactive_mode():
         choice = ui.main_menu()
         
         if choice == "Exit":
-            show_info("Thanks for using gitpush! 👋")
+            show_info("Thanks for using run-git! 👋")
             break
         elif choice == "🚀 Quick Push":
             handle_quick_push(git_ops)
@@ -200,50 +200,50 @@ def handle_configuration(git_ops):
     """Handle configuration"""
     show_info("Configuration settings")
     click.echo("\nAvailable commands:")
-    click.echo("  gitpush config --set-user    Set git user info")
-    click.echo("  gitpush remote              Manage remotes")
+    click.echo("  run-git config --set-user    Set git user info")
+    click.echo("  run-git remote              Manage remotes")
 
 
 def handle_advanced_tools(git_ops):
     """Handle advanced tools"""
     show_info("Advanced tools")
     click.echo("\nAvailable commands:")
-    click.echo("  gitpush stash               Stash changes")
-    click.echo("  gitpush clean               Clean repository")
-    click.echo("  gitpush undo                Undo last commit")
+    click.echo("  run-git stash               Stash changes")
+    click.echo("  run-git clean               Clean repository")
+    click.echo("  run-git undo                Undo last commit")
 
 
 def show_help():
     """Show help information"""
     help_text = """
-    [bold cyan]gitpush Commands:[/bold cyan]
+    [bold cyan]RUN-GIT Commands:[/bold cyan]
     
     [yellow]Basic Commands:[/yellow]
-      gitpush                    - Interactive mode
-      gitpush push              - Quick push (add, commit, pull, push)
-      gitpush status            - Show repository status
-      gitpush log               - Show commit history
+      run-git                    - Interactive mode
+      run-git push              - Quick push (add, commit, pull, push)
+      run-git status            - Show repository status
+      run-git log               - Show commit history
     
     [yellow]Repository:[/yellow]
-      gitpush init              - Initialize repository
-      gitpush init <url>        - Clone and setup repository
-      gitpush remote            - Show remote repositories
-      gitpush remote add <url>  - Add remote repository
+      run-git init              - Initialize repository
+      run-git init <url>        - Clone and setup repository
+      run-git remote            - Show remote repositories
+      run-git remote add <url>  - Add remote repository
     
     [yellow]Branches:[/yellow]
-      gitpush branch            - List branches
-      gitpush branch <name>     - Create branch
-      gitpush switch <name>     - Switch to branch
-      gitpush merge <name>      - Merge branch
+      run-git branch            - List branches
+      run-git branch <name>     - Create branch
+      run-git switch <name>     - Switch to branch
+      run-git merge <name>      - Merge branch
     
     [yellow]Advanced:[/yellow]
-      gitpush stash             - Stash changes
-      gitpush pull              - Pull changes
-      gitpush sync              - Sync with remote
+      run-git stash             - Stash changes
+      run-git pull              - Pull changes
+      run-git sync              - Sync with remote
     
     [yellow]Help:[/yellow]
-      gitpush --help            - Show this help
-      gitpush --version         - Show version
+      run-git --help            - Show this help
+      run-git --version         - Show version
     """
     from rich.console import Console
     console = Console()
@@ -267,7 +267,7 @@ def push(message, force, dry_run):
         return
     
     if not git_ops.is_git_repo():
-        show_error("Not a git repository. Run 'gitpush init' first")
+        show_error("Not a git repository. Run 'run-git init' first")
         return
     
     # Add all

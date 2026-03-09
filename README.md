@@ -19,7 +19,7 @@
 ┃   │  Developer    : Himanshu Kumar                           │   ┃
 ┃   │  GitHub       : @himanshu231204                          │   ┃
 ┃   │  Repository   : github.com/himanshu231204/gitpush        │   ┃
-┃   │  Version      : v1.0.0                                   │   ┃
+┃   │  Version      : v1.0.3                                   │   ┃
 ┃   │  License      : MIT                                      │   ┃
 ┃   └──────────────────────────────────────────────────────────┘   ┃
 ┃                                                                    ┃
@@ -27,8 +27,9 @@
 ┃                                                                    ┃
 ╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
 ```
-[![PyPI Downloads](https://static.pepy.tech/personalized-badge/run-git?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/run-git)
+
 [![PyPI version](https://badge.fury.io/py/run-git.svg)](https://badge.fury.io/py/run-git)
+[![Downloads](https://static.pepy.tech/badge/run-git)](https://pepy.tech/project/run-git)
 [![Tests](https://github.com/himanshu231204/gitpush/workflows/Tests/badge.svg)](https://github.com/himanshu231204/gitpush/actions)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

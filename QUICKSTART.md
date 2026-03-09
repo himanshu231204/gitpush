@@ -1,19 +1,19 @@
-# GITPUSH Quick Start Guide
+# RUN-GIT Quick Start Guide
 
-Welcome to GITPUSH! Get started in 2 minutes.
+Welcome to RUN-GIT! Get started in 2 minutes.
 
 ## Installation
 
 ```bash
-pip install gitpush
+pip install run-git
 ```
 
 ## Your First Push
 
 ```bash
 cd your-project
-gitpush init
-gitpush push
+run-git init
+run-git push
 ```
 
 Done! 🎉
