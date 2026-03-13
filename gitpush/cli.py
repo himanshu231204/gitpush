@@ -701,13 +701,35 @@ def new(repo_name, description, private, public, gitignore, license, no_readme, 
     
     # Initial commit
     show_progress("Creating initial commit...")
-    local_repo.index.add(['*'])
+    local_repo.git.add(A=True)
     local_repo.index.commit("Initial commit")
+    
+    # Ensure branch is main
+    
+    local_repo.git.branch('-M', 'main')
     
     # Push to GitHub
     show_progress("Pushing to GitHub...")
     origin = local_repo.remote('origin')
-    origin.push('main')
+    
+    try:
+        origin.push('main')
+
+    except Exception:
+                 show_warning("Push failed. Attempting to sync with remote...")
+
+    try:
+        local_repo.git.pull('origin', 'main', '--allow-unrelated-histories')
+        origin.push('main')
+        show_success("Repository synced and pushed successfully!")
+
+    except Exception as e:
+        show_error(f"Push failed after retry: {str(e)}")
+        return   
+    
+    
+    
+
     
     # Success!
     show_success("\n🎉 Repository created successfully!")
