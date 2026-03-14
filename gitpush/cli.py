@@ -28,6 +28,11 @@ def main(ctx, version):
         interactive_mode()
 
 
+# ========================================
+# - interactive_mode() function
+# ========================================
+
+
 def interactive_mode():
     """Run interactive mode"""
     git_ops = GitOperations()
@@ -41,6 +46,8 @@ def interactive_mode():
             break
         elif choice == "🚀 Quick Push":
             handle_quick_push(git_ops)
+        elif choice == "🆕 Create New Repo":  # ← NEW HANDLER
+            handle_create_repo(git_ops)
         elif choice == "🌿 Branch Operations":
             handle_branch_operations(git_ops, ui)
         elif choice == "📊 View Status/History":
@@ -119,6 +126,211 @@ def handle_quick_push(git_ops):
     
     # Push
     git_ops.push()
+
+
+
+
+
+def handle_create_repo(git_ops):
+    """Handle GitHub repository creation from interactive mode"""
+    from gitpush.core.github_manager import GitHubManager
+    from git import Repo, InvalidGitRepositoryError
+    
+    gh = GitHubManager()
+    ui = InteractiveUI()
+    
+    # Authenticate
+    if not gh.authenticate():
+        return
+    
+    # Check if already a git repo
+    try:
+        repo = Repo('.')
+        show_error("This directory is already a git repository!")
+        show_info(f"Remote: {repo.remotes.origin.url if repo.remotes else 'None'}")
+        
+        # Ask if they want to continue anyway
+        if not ui.confirm_action("Do you want to add a new remote anyway?"):
+            return
+    except InvalidGitRepositoryError:
+        pass  # Good, not a git repo
+    
+    # Get repo name
+    repo_name = questionary.text(
+        "Repository name:",
+        validate=lambda text: len(text) > 0 or "Name cannot be empty"
+    ).ask()
+    
+    if not repo_name:
+        show_info("Cancelled")
+        return
+    
+    # Build configuration interactively
+    config = {'name': repo_name}
+    
+    show_info("\n📝 Repository Configuration")
+    
+    # Description
+    description = questionary.text(
+        "Repository description:",
+        default=""
+    ).ask()
+    config['description'] = description
+    
+    # Visibility
+    visibility = questionary.select(
+        "Repository visibility:",
+        choices=['Public', 'Private']
+    ).ask()
+    config['private'] = (visibility == 'Private')
+    
+    # Gitignore
+    detected = gh.detect_language()
+    show_info(f"Detected language: {detected}")
+    
+    use_detected = questionary.confirm(
+        f"Use {detected} gitignore template?"
+    ).ask()
+    
+    if use_detected:
+        config['gitignore'] = detected
+    else:
+        templates = gh.get_gitignore_templates()
+        gitignore = questionary.select(
+            "Select gitignore template:",
+            choices=['None'] + templates
+        ).ask()
+        config['gitignore'] = None if gitignore == 'None' else gitignore
+    
+    # License
+    licenses = gh.get_license_templates()
+    license_choice = questionary.select(
+        "Select license:",
+        choices=list(licenses.keys())
+    ).ask()
+    config['license'] = licenses[license_choice]
+    
+    # README
+    config['readme'] = questionary.confirm(
+        "Create README.md?"
+    ).ask()
+    
+    # Summary
+    show_info("\n📋 Summary:")
+    show_info(f"  Name: {config['name']}")
+    show_info(f"  Description: {config.get('description', 'None')}")
+    show_info(f"  Visibility: {'Private' if config.get('private') else 'Public'}")
+    show_info(f"  Gitignore: {config.get('gitignore', 'None')}")
+    show_info(f"  License: {config.get('license', 'None')}")
+    show_info(f"  README: {'Yes' if config.get('readme') else 'No'}")
+    
+    confirm = questionary.confirm("\nCreate repository?").ask()
+    if not confirm:
+        show_info("Cancelled")
+        return
+    
+    # Create on GitHub
+    github_repo = gh.create_repository(config)
+    if not github_repo:
+        return
+    
+    # Initialize local repository
+    show_progress("Initializing local repository...")
+    local_repo = Repo.init('.')
+    
+    # Create .gitignore
+    if config.get('gitignore'):
+        show_progress("Creating .gitignore...")
+        gitignore_content = gh.get_gitignore_content(config['gitignore'])
+        if gitignore_content:
+            with open('.gitignore', 'w') as f:
+                f.write(gitignore_content)
+            show_success(".gitignore created")
+    
+    # Create LICENSE
+    if config.get('license'):
+        show_progress("Creating LICENSE...")
+        user = gh.github.get_user()
+        license_content = gh.get_license_content(
+            config['license'],
+            user.name or user.login
+        )
+        if license_content:
+            with open('LICENSE', 'w') as f:
+                f.write(license_content)
+            show_success("LICENSE created")
+    
+    # Create README
+    if config.get('readme'):
+        show_progress("Creating README.md...")
+        user = gh.github.get_user()
+        readme_content = f"""# {config['name']}
+
+{config.get('description', '')}
+
+## Installation
+
+```bash
+# Add installation instructions
+```
+
+## Usage
+
+```bash
+# Add usage examples
+```
+
+## Author
+
+{user.name or user.login} ([@{user.login}](https://github.com/{user.login}))
+
+## License
+
+{config.get('license', 'MIT').upper() if config.get('license') else 'All rights reserved'}
+"""
+        with open('README.md', 'w') as f:
+            f.write(readme_content)
+        show_success("README.md created")
+    
+    # Add remote
+    show_progress("Adding remote origin...")
+    local_repo.create_remote('origin', github_repo.clone_url)
+    
+    # Initial commit
+    show_progress("Creating initial commit...")
+    local_repo.git.add(A=True)
+    local_repo.index.commit("Initial commit")
+    
+    # Ensure branch is main
+    show_progress("Setting up main branch...")
+    local_repo.git.branch('-M', 'main')
+    
+    # Push to GitHub
+    show_progress("Pushing to GitHub...")
+    origin = local_repo.remote('origin')
+    
+    try:
+        origin.push('main')
+        show_success("Repository pushed successfully!")
+    except Exception as e:
+        show_warning("Push failed. Attempting to sync with remote...")
+        try:
+            local_repo.git.pull('origin', 'main', '--allow-unrelated-histories')
+            origin.push('main')
+            show_success("Repository synced and pushed successfully!")
+        except Exception as sync_error:
+            show_error(f"Push failed after retry: {str(sync_error)}")
+            show_info("Repository created on GitHub but local push failed.")
+            show_info(f"Manual push: git push -u origin main")
+            return
+    
+    # Success!
+    show_success("\n🎉 Repository created successfully!")
+    show_info(f"🔗 {github_repo.html_url}")
+    show_info(f"📂 Local: {os.getcwd()}")
+    show_info("\nNext steps:")
+    show_info("  1. Add your code")
+    show_info("  2. run-git push")
 
 
 def handle_branch_operations(git_ops, ui):

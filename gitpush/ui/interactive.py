@@ -20,11 +20,12 @@ class InteractiveUI:
         panel = Panel(
             "[bold cyan]gitpush - Main Menu[/bold cyan]\n\n"
             "1. 🚀 Quick Push\n"
-            "2. 🌿 Branch Operations\n"
-            "3. 📊 View Status/History\n"
-            "4. ⚙️  Configuration\n"
-            "5. 🔧 Advanced Tools\n"
-            "6. 📚 Help & Docs\n"
+            "2. 🆕 Create New Repo\n"
+            "3. 🌿 Branch Operations\n"
+            "4. 📊 View Status/History\n"
+            "5. ⚙️  Configuration\n"
+            "6. 🔧 Advanced Tools\n"
+            "7. 📚 Help & Docs\n"
             "0. Exit",
             title="Choose an option",
             border_style="cyan",
@@ -36,6 +37,7 @@ class InteractiveUI:
             "",
             choices=[
                 "🚀 Quick Push",
+                "🆕 Create New Repo",
                 "🌿 Branch Operations",
                 "📊 View Status/History",
                 "⚙️  Configuration",
