@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.0.6] - 2026-03-15
+ 
+### 🆕 Added
+- **Interactive Menu Integration**: "Create New Repo" option now available in interactive mode
+  - Access via `run-git` → Select "🆕 Create New Repo"
+  - Full interactive workflow with guided prompts
+  - Same powerful features as CLI command
+ 
+### 🔧 Improved
+- **Enhanced Push Reliability**: Improved repository push mechanism with automatic retry
+  - Smart branch management (ensures `main` branch)
+  - Automatic sync with remote on conflicts
+  - Graceful error handling with manual fallback options
+- **Better Git Add**: Using `git.add(A=True)` for more reliable file staging
+- **Branch Naming**: Automatically uses `main` branch (not `master`)
+- **Conflict Resolution**: Auto-handles unrelated histories with `--allow-unrelated-histories`
+ 
+### 🐛 Fixed
+- Fixed push failures when remote has diverged
+- Improved error messages for failed operations
+- Better handling of repository state conflicts
+- Fixed branch naming inconsistencies
+ 
+### 📚 Documentation
+- Updated README with interactive mode usage
+- Enhanced troubleshooting section
+- Added error handling examples
+
+---
 ## 📦 RUN-GIT v1.0.5 – 2026-03-13
 
 ### ✨ Improvements
