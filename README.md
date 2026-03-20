@@ -59,6 +59,45 @@ Created by **Himanshu Kumar** ([@himanshu231204](https://github.com/himanshu2312
 
 ---
 
+🎯 Positioning
+Tool	   Purpose
+gh CLI	Power & flexibility
+RUN-GIT	Speed & simplicity
+
+---
+💡 Use Cases
+
+🚀 Hackathons
+
+📚 Students / beginners
+
+⚡ Quick projects
+
+🔁 Daily commits
+
+🧪 Prototyping
+
+---
+⚔️ Why Not Just Scripts?
+
+Yes, you can write aliases or scripts.
+
+But RUN-GIT provides:
+
+✅ Zero setup
+
+✅ Cross-platform support
+
+✅ Error handling
+
+✅ Interactive interface
+
+✅ Smart automation
+
+---
+
+RUN-GIT is a “no-thinking layer” on top of Git, not a replacement for advanced tools.
+
 ## 📦 Installation
 
 ```bash
@@ -93,170 +132,6 @@ run-git push -m "Add new feature"
 run-git
 ```
 
-**New in v1.0.7:** Smart folder detection and existing repo support! 🎉
-
----
-
-## 🆕 v1.0.7: Smart Repository Creation
-
-### 🎯 What's New
-
-#### **1. Smart Folder Detection** 📂
-
-RUN-GIT now detects existing files before creating a repository!
-
-```bash
-cd my-existing-project  # Folder with existing files
-
-run-git
-# Select "🆕 Create New Repo"
-```
-
-**Output:**
-```
-📂 Found 10 file(s) in current folder:
-   • app.py
-   • requirements.txt
-   • config.json
-   • utils.py
-   • models.py
-   ... and 5 more
-
-? Create repository and include these files? (Y/n)
-```
-
-**Benefits:**
-- ✅ See what files will be included
-- ✅ Prevent accidental commits
-- ✅ Full transparency before creating repo
-
-#### **2. Existing Repository Support** 🔄
-
-Already have a local git repo? Connect it to GitHub!
-
-```bash
-cd my-git-project  # Already initialized with git
-
-run-git
-# Select "🆕 Create New Repo"
-```
-
-**Output:**
-```
-⚠️  This directory is already a git repository!
-ℹ️  Remote: None
-
-? Connect this existing local repo to new GitHub repository? (Y/n)
-```
-
-**Benefits:**
-- ✅ Preserves existing git history
-- ✅ Connects to new GitHub repo
-- ✅ No need to re-initialize
-
-#### **3. Smart Remote Management** 🔗
-
-Handles existing remotes intelligently!
-
-```
-⚠️  Remote 'origin' already exists
-
-? Replace existing remote 'origin' with new repository? (Y/n)
-```
-
-**Benefits:**
-- ✅ Never accidentally overwrites remotes
-- ✅ Clear confirmation before changes
-- ✅ Option to keep existing setup
-
-#### **4. File Conflict Prevention** 📄
-
-Never overwrites your existing files!
-
-```
-ℹ️  .gitignore already exists, skipping...
-ℹ️  LICENSE already exists, skipping...
-ℹ️  README.md already exists, skipping...
-```
-
-**Benefits:**
-- ✅ Preserves your custom configurations
-- ✅ Clear messages about what's skipped
-- ✅ Safe operations always
-
-#### **5. Fixed Push Issues** 🔧
-
-Resolved "protocol 'https' is not supported" error!
-
-**What was fixed:**
-- ✅ Clean URL formatting (removes invisible characters)
-- ✅ Token-based authentication
-- ✅ Better Windows compatibility
-- ✅ Enhanced error messages
-
----
-
-## 💡 Use Cases
-
-### **Scenario 1: New Empty Project**
-```bash
-mkdir new-app
-cd new-app
-run-git new my-app --quick
-```
-**Result:** Fresh repo with all files! ✅
-
-### **Scenario 2: Existing Project with Files**
-```bash
-cd my-existing-app  # Has 20 files
-run-git
-# Select "Create New Repo"
-# Confirms: "Found 20 files, include them?"
-# You: Yes
-```
-**Result:** All files pushed to new GitHub repo! ✅
-
-### **Scenario 3: Already a Git Repo (No Remote)**
-```bash
-cd my-git-project  # Already has .git
-run-git
-# "Connect existing repo to GitHub?"
-# You: Yes
-```
-**Result:** Existing repo connected to GitHub! ✅
-
-### **Scenario 4: Has Remote Already**
-```bash
-cd project-with-remote
-run-git
-# "Replace existing remote?"
-# You: Yes/No
-```
-**Result:** Handled gracefully! ✅
-
----
-
-## 🆕 GitHub Repository Creation
-
-### ⚙️ One-Time Setup
-
-**Step 1: Create GitHub Token**
-
-1. Go to: https://github.com/settings/tokens
-2. Click **"Generate new token (classic)"**
-3. Name: `run-git-token`
-4. Scopes: ✅ **repo** + ✅ **user**
-5. Generate and copy token
-
-**Step 2: First Time Use**
-
-```bash
-run-git new my-first-repo --quick
-```
-
-Paste token when prompted. **Saved forever!** 🎉
-
----
 
 ### 💡 Creating Repositories
 
@@ -357,28 +232,6 @@ RUN-GIT generates intelligent commit messages:
 
 ---
 
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Q: "protocol 'https' is not supported" error?**
-
-A: **Fixed in v1.0.7!** Update to latest version:
-```bash
-pip install --upgrade run-git
-```
-
-**Q: Push fails after repo creation?**
-
-A: v1.0.7 includes automatic retry with token authentication. Should work now!
-
-**Q: Already have files in folder?**
-
-A: v1.0.7 detects them and asks for confirmation. Safe to use!
-
-**Q: Already a git repo?**
-
-A: v1.0.7 can connect it to GitHub. Just confirm when asked!
 
 ---
 
@@ -412,56 +265,8 @@ If you find RUN-GIT helpful, please:
 
 ---
 
-## 📈 What's New in v1.0.7
 
-### 🆕 Major Features
-- **Smart Folder Detection**: See existing files before creating repo
-- **Existing Repo Support**: Connect local repos to GitHub
-- **Smart Remote Management**: Handle existing remotes gracefully
-- **File Conflict Prevention**: Never overwrites existing files
 
-### 🔧 Critical Fixes
-- **Fixed "protocol 'https' is not supported" error**
-- Better URL handling with whitespace removal
-- Token-based push authentication
-- Enhanced error recovery
-
-### 🎯 Improvements
-- Context-aware commit messages
-- Better user confirmations
-- Clearer progress messages
-- More robust push mechanism
-
-### 🐛 Bug Fixes
-- Fixed push failures on Windows
-- Fixed URL malformation issues
-- Better handling of existing git repos
-- Improved remote conflict resolution
-
----
-
-## 📊 Why RUN-GIT?
-
-### The Problem
-Git is powerful but complex. Developers struggle with:
-- Remembering command sequences
-- Handling merge conflicts
-- Writing good commit messages
-- Managing branches
-- Creating GitHub repositories
-- Dealing with existing projects
-- Push failures and errors
-
-### The Solution
-RUN-GIT provides:
-- ✅ One command for common workflows
-- ✅ Interactive menus for guidance
-- ✅ Auto-generated commit messages
-- ✅ Beautiful terminal UI
-- ✅ Smart folder detection
-- ✅ Existing repo support
-- ✅ Automatic error recovery
-- ✅ Zero learning curve
 
 ---
 
