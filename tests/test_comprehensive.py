@@ -122,7 +122,7 @@ class TestCommitGenerator(unittest.TestCase):
         """Test Python file categorization"""
         generator = CommitGenerator(None)
         
-        files = ['main.py', 'test.py', 'utils.py']
+        files = ['main.py', 'app.py', 'utils.py']
         categories = generator._categorize_files(files)
         
         self.assertEqual(categories['code'], 3)
@@ -182,7 +182,7 @@ class TestCLI(unittest.TestCase):
         """Test version import"""
         from gitpush import __version__
         self.assertIsNotNone(__version__)
-        self.assertEqual(__version__, "1.0.0")
+        self.assertEqual(__version__, "1.0.9")
 
 
 if __name__ == '__main__':

@@ -71,12 +71,19 @@ class GitOperations:
             return None
         
         try:
+            try:
+                staged = [item.a_path for item in self.repo.index.diff('HEAD')]
+            except git.BadName:
+                staged = []
+
+            untracked = list(self.repo.untracked_files)
+            modified = [item.a_path for item in self.repo.index.diff(None)]
             status = {
-                'untracked': self.repo.untracked_files,
-                'modified': [item.a_path for item in self.repo.index.diff(None)],
-                'staged': [item.a_path for item in self.repo.index.diff('HEAD')],
+                'untracked': untracked,
+                'modified': modified,
+                'staged': staged,
                 'branch': self.repo.active_branch.name,
-                'has_changes': len(self.repo.untracked_files) > 0 or len([item for item in self.repo.index.diff(None)]) > 0
+                'has_changes': len(untracked) > 0 or len(modified) > 0
             }
             return status
         except Exception as e:
