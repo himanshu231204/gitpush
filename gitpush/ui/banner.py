@@ -83,60 +83,37 @@ GIT_LOGO = """
 ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝      ╚═════╝ ╚═╝   ╚═╝   
 """
 
-# Animated RUN-GIT text
-RUN_GIT_TEXT = [
-    ["⚡ RUN-GIT ⚡", "cyan"],
-    ["⚡ RUN-GIT ⚡", "magenta"],
-    ["⚡ RUN-GIT ⚡", "green"],
-    ["⚡ RUN-GIT ⚡", "yellow"],
-    ["⚡ RUN-GIT ⚡", "cyan"],
-]
-
-# Subtitle
-SUBTITLE = "Git Operations, Simplified"
-
 # Tagline
 TAGLINE = "One Command • Zero Hassle • Full Control"
 
 
-def get_banner(version=None, animated=False):
-    """Get professional banner"""
+def get_banner(version=None):
+    """Get simple banner (no animation)"""
     ver = version or __version__
     return f"""
 {GIT_LOGO}
         [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]
    [bold]Git Operations, Simplified[/bold]
 
- [dim]One Command • Zero Hassle • Full Control[/dim]
+ [dim]{TAGLINE}[/dim]
 """
 
 
 def show_banner():
-    """Display the run-git banner with animation"""
-    # Show Git logo
+    """Display the run-git banner - simple version (no repeat)"""
     console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
-    
-    # Animated RUN-GIT text
-    for text, color in RUN_GIT_TEXT:
-        console.clear()
-        console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
-        console.print(f"\n        [bold {color}]{text}[/bold {color}]")
-        console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
-        console.print(f" [dim]{TAGLINE}[/dim]")
-        time.sleep(0.15)
-    
-    # Final banner (stays on screen)
     console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
     console.print(f" [dim]{TAGLINE}[/dim]")
 
 
-def show_banner_simple():
-    """Display simple non-animated banner"""
+def show_banner_with_version():
+    """Display banner with version info"""
     console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
     console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
-    console.print(f" [dim]{TAGLINE}[/dim]")
+    console.print(f" [dim]{TAGLINE}[/dim]\n")
+    console.print(f" [dim]v{__version__}[/dim]")
 
 
 def show_success(message):
