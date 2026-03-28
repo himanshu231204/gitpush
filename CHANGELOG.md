@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+[1.1.1] - 2026-03-29
+
+### 🎨 UI Enhancements
+
+* **Professional Banner** - New Git ASCII logo with RUN-GIT branding
+* **Animated Banner** - Color-cycling animation for RUN-GIT text
+* **Theme Support** - Default, dark, and light color themes
+* **Loading Spinners** - Animated spinners for long operations
+* **Progress Bars** - Rich progress bars for push/pull operations
+* **Keyboard Shortcuts** - New shortcuts display for power users
+* **Enhanced Menus** - Improved TUI with shortcut hints
+
+### 🛠 Improvements
+
+* Better error/success/warning messages
+* Command suggestions for common mistakes
+* Theme command: `run-git theme [default|dark|light]`
+
+---
+
 [1.1.0] - 2026-03-29
 
 ### 🚀 Major Changes
