@@ -63,6 +63,7 @@ That's it. One command does all four steps, auto-generates a meaningful commit m
 | 🎨 **Interactive TUI** | Full terminal menu — no flags to remember |
 | 🆕 **GitHub Repo Creator** | Create public/private repos from the CLI without leaving your terminal |
 | 🌿 **Branch Management** | Create, switch, merge, and delete branches with simple commands |
+| 🌳 **Commit Graph** | Visualize commit history with ASCII graphs and file diffs |
 | 🔐 **Secret File Guard** | Warns you before accidentally pushing `.env`, tokens, or credentials |
 | 🔀 **Conflict Helper** | Guided, interactive merge-conflict resolution |
 | 🔄 **Smart Sync** | Pull + push in one step, with auto-retry on failure |
@@ -127,6 +128,12 @@ run-git init https://github.com/user/repo.git  # clone existing repo
 | `run-git init` | Initialise a local or cloned repository |
 | `run-git status` | Rich colour-coded repository status |
 | `run-git log` | Formatted commit history |
+| `run-git graph` | Visual commit history (table view) |
+| `run-git graph --graph` | ASCII graph with branch lines |
+| `run-git graph --tree` | Branch tree overview |
+| `run-git graph --commit <hash>` | View specific commit details |
+| `run-git graph --commit <hash> --diff` | View commit with file changes |
+| `run-git graph -i` | Interactive commit selection |
 | `run-git branch` | List all branches |
 | `run-git branch <name>` | Create a new branch |
 | `run-git switch <name>` | Switch to a branch |
@@ -143,7 +150,7 @@ run-git init https://github.com/user/repo.git  # clone existing repo
 
 ## 🏗️ Architecture
 
-RUN-GIT v1.1.0+ features a modular, maintainable architecture:
+RUN-GIT v1.2.0+ features a modular, maintainable architecture:
 
 ```
 gitpush/
@@ -155,12 +162,14 @@ gitpush/
 │   ├── branch.py            # Branch operations
 │   ├── remote.py            # Remote management
 │   ├── stash.py             # Stash operations
-│   └── github.py            # GitHub integration
+│   ├── github.py            # GitHub integration
+│   └── graph.py             # Commit graph visualization
 ├── core/                    # Business logic
 │   ├── git_operations.py    # Git operations
 │   ├── commit_generator.py  # Auto commit messages
 │   ├── conflict_resolver.py # Merge conflict handling
-│   └── github_manager.py    # GitHub API
+│   ├── github_manager.py    # GitHub API
+│   └── graph_renderer.py    # Graph rendering logic
 ├── ui/                      # Terminal UI
 │   ├── banner.py            # Banner & messages
 │   └── interactive.py       # Interactive menus
