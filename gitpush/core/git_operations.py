@@ -1,8 +1,10 @@
 """
 Core Git operations for gitpush
 """
+from __future__ import annotations
 import os
 import re
+from typing import Optional, Dict, List, Any
 import git
 from git.exc import GitCommandError, InvalidGitRepositoryError
 from gitpush.ui.banner import show_success, show_error, show_warning, show_info, show_progress
@@ -16,9 +18,9 @@ MAX_BRANCH_NAME_LENGTH = 100
 class GitOperations:
     """Handle all git operations"""
     
-    def __init__(self, path="."):
+    def __init__(self, path: str = "."):
         self.path = path
-        self.repo = None
+        self.repo: Optional[git.Repo] = None
         self._initialize_repo()
     
     @staticmethod
@@ -35,11 +37,11 @@ class GitOperations:
         except InvalidGitRepositoryError:
             self.repo = None
     
-    def is_git_repo(self):
+    def is_git_repo(self) -> bool:
         """Check if current directory is a git repository"""
         return self.repo is not None
     
-    def init_repo(self, remote_url=None):
+    def init_repo(self, remote_url: Optional[str] = None) -> bool:
         """Initialize a new git repository"""
         try:
             if self.is_git_repo():
