@@ -74,12 +74,17 @@ That's it. One command does all four steps, auto-generates a meaningful commit m
 ## 📦 Installation
 
 ```bash
+# Install
 pip install run-git
+
+# Upgrade to latest version
+pip install --upgrade run-git
 ```
 
 Requires **Python 3.8+**. Works on macOS, Linux, and Windows.
 
 > First time? Set your GitHub token once with `run-git init` and you're ready to go.
+> Already installed? Upgrade with `pip install --upgrade run-git`
 
 ---
 
