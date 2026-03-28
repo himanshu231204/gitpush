@@ -82,7 +82,7 @@ def get_banner(version=None):
 │   ██║     ╚██████╔╝██║ ╚████║     ╚██████╔╝██║   ██║                 │
 │   ╚═╝      ╚═════╝ ╚═╝  ╚═══╝      ╚═════╝ ╚═╝   ╚═╝                 │
 │                                                                      │
-│           ⚡ Git Operations, Simplified ⚡                          │
+│           ⚡ Git Operations, Simplified ⚡                            │
 │                                                                      │
 │        One Command  •  Zero Hassle  •  Full Control                  │
 │                                                                      │
