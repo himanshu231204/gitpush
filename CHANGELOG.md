@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+[1.1.0] - 2026-03-29
+
+### 🚀 Major Changes
+
+* 📦 **Project Restructuring** - Complete code organization overhaul
+* 🔄 Split monolithic cli.py (993 lines) into modular commands/ directory
+* ➕ Added new utils/ module with validators, formatters, and file helpers
+* 🛡️ Created custom exceptions.py for better error handling
+* ⚙️ Enhanced config/ with Settings class for configuration management
+
+### ✅ Benefits
+
+* **Maintainability**: Each command isolated in own file
+* **Testability**: Can unit test each command independently  
+* **Scalability**: Easy to add new commands
+
+---
+
 [1.0.9] - 2026-03-18
 
 ### 🛠 Fixes
