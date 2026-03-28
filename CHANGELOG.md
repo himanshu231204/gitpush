@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+[1.1.2] - 2026-03-29
+
+### 🐛 Bug Fixes
+
+* Fixed interactive menu - commands now execute when selected
+* Fixed banner repeating multiple times - now shows once
+* Better menu handling and flow
+
+### 🛠 Improvements
+
+* Clean banner without animation (Windows compatibility)
+* Better error handling in interactive mode
+
+---
+
 [1.1.1] - 2026-03-29
 
 ### 🎨 UI Enhancements
