@@ -5,6 +5,7 @@ import sys
 from rich.console import Console
 from rich.theme import Theme
 from rich.style import Style
+from rich import box
 from gitpush import __version__
 
 # Custom theme
@@ -26,7 +27,7 @@ class ThemeManager:
     THEMES = {
         'default': {
             'primary': 'cyan',
-            'secondary': 'green',
+            'secondary': 'green', 
             'accent': 'magenta',
             'success': 'green',
             'error': 'red',
@@ -69,34 +70,27 @@ def set_theme(theme_name):
 
 
 def get_banner(version=None):
-    """Get banner with dynamic version"""
+    """Get simple impactful banner"""
     ver = version or __version__
     return f"""
-╭━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╮
-┃                                                                  ┃
-┃    ██████╗ ██╗   ██╗███╗   ██╗      ██████╗ ██╗████████╗         ┃
-┃    ██╔══██╗██║   ██║████╗  ██║     ██╔════╝ ██║╚══██╔══╝         ┃
-┃    ██████╔╝██║   ██║██╔██╗ ██║     ██║  ███╗██║   ██║            ┃
-┃    ██╔══██╗██║   ██║██║╚██╗██║     ██║   ██║██║   ██║            ┃
-┃    ██║  ██║╚██████╔╝██║ ╚████║     ╚██████╔╝██║   ██║            ┃
-┃    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝      ╚═════╝ ╚═╝   ╚═╝            ┃
-┃                                                                  ┃
-┃   ═══════════════════════════════════════════════════════════    ┃
-┃                                                                  ┃
-┃   ⚡ Git Operations Made Effortless                              ┃
-┃   🎯 One Command | Zero Hassle | Full Control                    ┃
-┃                                                                  ┃
-┃   ┌──────────────────────────────────────────────────────────┐   ┃
-┃   │  👤 Developer    : Himanshu Kumar                         │   ┃
-┃   │  🔗 GitHub       : @himanshu231204                        │   ┃
-┃   │  📦 Version     : {ver:<42}│   ┃
-┃   │  🌐 Repository  : github.com/himanshu231204/gitpush       │   ┃
-┃   │                                                          │   ┃
-┃   └──────────────────────────────────────────────────────────┘   ┃
-┃                                                                  ┃
-┃   💡 Press 'h' for help | 'q' to quit                           ┃
-┃                                                                  ┃
-╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯
+╭─────────────────────────────────────────────────────────────────╮
+│                                                                  │
+│   ██████╗ ██╗   ██╗██╗   ██╗███████╗██████╗                   │
+│   ██╔══██╗██║   ██║██║   ██║██╔════╝██╔══██╗                  │
+│   ██████╔╝██║   ██║██║   ██║█████╗  ██████╔╝                  │
+│   ██╔═══╝ ██║   ██║██║   ██║██╔══╝  ██╔══██╗                  │
+│   ██║     ╚██████╔╝╚██████╔╝███████╗██║  ██║                  │
+│   ╚═╝      ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝                  │
+│                                                                  │
+│   ─────────────────────────────────────────────────────────────   │
+│                                                                  │
+│   RUN-GIT  ⚡  Git Automation CLI                               │
+│                                                                  │
+│   v{ver}    │    @himanshu231204    │    MIT License          │
+│                                                                  │
+│   push • status • branch • new • help                         │
+│                                                                  │
+╰─────────────────────────────────────────────────────────────────╯
 """
 
 
@@ -107,32 +101,32 @@ def show_banner():
 
 def show_success(message):
     """Show success message"""
-    console.print(f"✅  {message}", style=f"bold {current_theme.colors['success']}")
+    console.print(f"✓  {message}", style=f"bold {current_theme.colors['success']}")
 
 
 def show_error(message):
     """Show error message"""
-    console.print(f"❌  {message}", style=f"bold {current_theme.colors['error']}")
+    console.print(f"✗  {message}", style=f"bold {current_theme.colors['error']}")
 
 
 def show_warning(message):
     """Show warning message"""
-    console.print(f"⚠️  {message}", style=f"bold {current_theme.colors['warning']}")
+    console.print(f"⚠  {message}", style=f"bold {current_theme.colors['warning']}")
 
 
 def show_info(message):
     """Show info message"""
-    console.print(f"ℹ️  {message}", style=f"bold {current_theme.colors['primary']}")
+    console.print(f"ℹ  {message}", style=f"bold {current_theme.colors['primary']}")
 
 
 def show_progress(message):
     """Show progress message"""
-    console.print(f"⏳ {message}", style=f"bold {current_theme.colors['accent']}")
+    console.print(f"⟳ {message}", style=f"bold {current_theme.colors['accent']}")
 
 
 def show_step(step, total, message):
     """Show progress step (e.g., 2/4)"""
-    console.print(f"[{current_theme.colors['primary']}]{step}/{total}[/] {message}")
+    console.print(f"[{current_theme.colors['primary']}][{step}/{total}][/{current_theme.colors['primary']}] {message}")
 
 
 def show_keyhint(keys):
@@ -167,7 +161,7 @@ class Spinner:
         if message:
             self.message = message
         frame = self.FRAMES[self.frame % len(self.FRAMES)]
-        console.print(f"\r{frame} {self.message}", end="", flush=True)
+        print(f"\r{frame} {self.message}", end="", flush=True)
         self.frame += 1
 
 
@@ -200,7 +194,7 @@ def colorize_status(status):
 # Command suggestion
 def show_suggestion(command, explanation):
     """Show command suggestion"""
-    console.print(f"💡 Did you mean: [bold cyan]{command}[/]? {explanation}")
+    console.print(f"→ Did you mean: [bold cyan]{command}[/]? {explanation}")
 
 
 # Keyboard shortcut display
@@ -232,7 +226,7 @@ def show_shortcuts():
     
     panel = Panel(
         table,
-        title=f"[{current_theme.colors['primary']}]⌨️  Keyboard Shortcuts[/{current_theme.colors['primary']}]",
+        title=f"[{current_theme.colors['primary']}]⌨  Keyboard Shortcuts[/{current_theme.colors['primary']}]",
         border_style=current_theme.colors['primary'],
         box=box.ROUNDED
     )
