@@ -61,3 +61,4 @@ PRIVATE_DOCS_README.md
 SPEC.md
 prompt.txt
 AGENTS.MD
+backend/gitpush.db
