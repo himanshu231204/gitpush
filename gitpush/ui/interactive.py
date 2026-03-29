@@ -44,6 +44,7 @@ class InteractiveUI:
                     "🌳 Commit Graph       [g] - Visual commit tree & diff",
                     "🔄 Sync              [y] - Pull & push",
                     "⚙️  Settings          [s] - Configuration",
+                    "🤖 AI Assistant      [i] - AI commit, PR & review",
                     "🔧 Advanced Tools     [a] - Stash, undo, etc.",
                     "📚 Help & Docs        [h] - Keyboard shortcuts",
                     "[red]❌ Exit           [q] - Quit application[/red]",
@@ -136,6 +137,9 @@ class InteractiveUI:
                     git_ops.push()
                     show_info("Sync complete!")
                     
+            elif 'AI Assistant' in choice:
+                InteractiveUI.ai_menu()
+
             elif 'Settings' in choice or 'Configuration' in choice:
                 InteractiveUI.settings_menu()
                 
@@ -319,6 +323,102 @@ class InteractiveUI:
             commits = git_ops.get_log(max_count=20)
             InteractiveUI.show_log_table(commits)
     
+    @staticmethod
+    def ai_menu():
+        """Show AI assistant menu"""
+        while True:
+            panel = Panel(
+                "[bold]AI Assistant[/bold]\n"
+                "[dim]Generate commits, PRs & reviews with AI[/dim]",
+                title="[bold]🤖 AI ASSISTANT[/bold]",
+                border_style="cyan",
+                box=box.ROUNDED
+            )
+            console.print(panel)
+
+            choice = questionary.select(
+                "",
+                choices=[
+                    "💬 Generate Commit   - AI commit message from staged diff",
+                    "📝 Generate PR       - AI PR description from branch diff",
+                    "🔍 Code Review       - AI review of your changes",
+                    "⬅️  Back           - Return to main menu",
+                ],
+                qmark="➜",
+                pointer="►"
+            ).ask()
+
+            if not choice or 'Back' in choice:
+                break
+
+            from gitpush.core.ai_engine import AIEngine
+            from gitpush.core.git_operations import GitOperations
+            from gitpush.ui.banner import show_error, show_info, show_success
+
+            git_ops = GitOperations()
+            if not git_ops.is_git_repo():
+                show_error("Not a git repository. Run 'run-git init' first")
+                continue
+
+            engine = AIEngine(git_ops=git_ops)
+
+            if 'Commit' in choice:
+                try:
+                    message = engine.generate_commit_message()
+                    show_success("AI commit message generated")
+                    show_info("Review the message before committing:")
+                    console.print(message)
+                except Exception as exc:
+                    show_error(f"Failed to generate commit message: {exc}")
+
+            elif 'PR' in choice:
+                from gitpush.ai.config import AIConfig
+                config = AIConfig.from_env()
+                base = questionary.text(
+                    "Base branch:",
+                    default=config.default_base_branch,
+                    qmark="➜"
+                ).ask()
+                if not base:
+                    continue
+                head = questionary.text("Head ref:", default="HEAD", qmark="➜").ask()
+                if not head:
+                    continue
+                try:
+                    engine = AIEngine(git_ops=git_ops, config=config)
+                    description = engine.generate_pr_description(
+                        base_branch=base,
+                        head_ref=head,
+                        commit_limit=config.default_commit_history_limit,
+                    )
+                    show_success("AI PR description generated")
+                    show_info(f"Diff: {base}...{head}")
+                    console.print(description)
+                except Exception as exc:
+                    show_error(f"Failed to generate PR description: {exc}")
+
+            elif 'Review' in choice:
+                from gitpush.ai.config import AIConfig
+                config = AIConfig.from_env()
+                base = questionary.text(
+                    "Base branch:",
+                    default=config.default_base_branch,
+                    qmark="➜"
+                ).ask()
+                if not base:
+                    continue
+                head = questionary.text("Head ref:", default="HEAD", qmark="➜").ask()
+                if not head:
+                    continue
+                try:
+                    engine = AIEngine(git_ops=git_ops, config=config)
+                    review = engine.generate_review(base_branch=base, head_ref=head)
+                    show_success("AI review generated")
+                    show_info(f"Diff: {base}...{head}")
+                    console.print(review)
+                except Exception as exc:
+                    show_error(f"Failed to generate review: {exc}")
+
     @staticmethod
     def graph_menu():
         """Show graph/visualization menu"""

@@ -13,6 +13,7 @@ from gitpush.commands.graph import graph
 from gitpush.commands.commit_ai import commit_ai
 from gitpush.commands.pr_ai import pr_ai
 from gitpush.commands.review_ai import review_ai
+from gitpush.commands.ai import ai_command
 
 __all__ = [
     'push',
@@ -33,4 +34,5 @@ __all__ = [
     'commit_ai',
     'pr_ai',
     'review_ai',
+    'ai_command',
 ]
