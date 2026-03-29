@@ -288,6 +288,73 @@ class GitOperations:
         except Exception as e:
             show_error(f"Failed to get log: {str(e)}")
             return []
+
+    def get_staged_diff(self) -> str:
+        """Get staged diff (`git diff --staged`)."""
+        if not self.is_git_repo() or self.repo is None:
+            return ""
+
+        try:
+            return self.repo.git.diff("--staged")
+        except Exception as e:
+            show_error(f"Failed to read staged diff: {str(e)}")
+            return ""
+
+    def get_working_diff(self) -> str:
+        """Get unstaged working-tree diff (`git diff`)."""
+        if not self.is_git_repo() or self.repo is None:
+            return ""
+
+        try:
+            return self.repo.git.diff()
+        except Exception as e:
+            show_error(f"Failed to read working diff: {str(e)}")
+            return ""
+
+    def get_branch_diff(self, base_branch: str = "main", head_ref: str = "HEAD") -> str:
+        """Get full diff between branches using three-dot comparison."""
+        if not self.is_git_repo() or self.repo is None:
+            return ""
+
+        resolved_base = self._resolve_branch_reference(base_branch)
+        if not resolved_base:
+            show_error(f"Base branch '{base_branch}' not found")
+            return ""
+
+        try:
+            return self.repo.git.diff(f"{resolved_base}...{head_ref}")
+        except Exception as e:
+            show_error(f"Failed to read branch diff: {str(e)}")
+            return ""
+
+    def get_recent_commit_messages(self, limit: int = 5, rev: str = "HEAD") -> List[str]:
+        """Get recent commit subjects from a revision."""
+        if not self.is_git_repo() or self.repo is None:
+            return []
+
+        try:
+            messages: List[str] = []
+            for commit in self.repo.iter_commits(rev=rev, max_count=limit):
+                messages.append(commit.message.strip().split("\n")[0])
+            return messages
+        except Exception as e:
+            show_error(f"Failed to read commit messages: {str(e)}")
+            return []
+
+    def _resolve_branch_reference(self, branch_name: str) -> Optional[str]:
+        """Resolve branch name to local or origin/<branch> reference."""
+        if not self.is_git_repo() or self.repo is None:
+            return None
+
+        candidates = [branch_name, f"origin/{branch_name}"]
+        for candidate in candidates:
+            try:
+                self.repo.commit(candidate)
+                return candidate
+            except Exception:
+                continue
+
+        return None
     
     def check_sensitive_files(self):
         """Check for sensitive files before commit"""

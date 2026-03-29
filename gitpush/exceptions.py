@@ -76,3 +76,19 @@ class ConfigurationError(GitPushError):
 class ValidationError(GitPushError):
     """Raised when input validation fails."""
     pass
+
+
+class AIConfigurationError(GitPushError):
+    """Raised when AI provider configuration is invalid or missing."""
+
+
+class AIProviderError(GitPushError):
+    """Raised when an AI provider request fails."""
+
+
+class AIGenerationError(GitPushError):
+    """Raised when generated AI content is missing or malformed."""
+
+
+class AIDiffError(GitPushError):
+    """Raised when git diff extraction/processing fails for AI features."""

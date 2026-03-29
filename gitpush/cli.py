@@ -21,6 +21,9 @@ from gitpush.commands import (
     new,
     theme,
     graph,
+    commit_ai,
+    pr_ai,
+    review_ai,
 )
 
 
@@ -56,6 +59,9 @@ main.add_command(undo)
 main.add_command(new)
 main.add_command(theme)
 main.add_command(graph)
+main.add_command(commit_ai)
+main.add_command(pr_ai)
+main.add_command(review_ai)
 
 
 if __name__ == '__main__':

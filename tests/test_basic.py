@@ -22,7 +22,7 @@ class TestGitOperations(unittest.TestCase):
     def tearDown(self):
         """Clean up test repository"""
         os.chdir(self.original_dir)
-        shutil.rmtree(self.test_dir)
+        shutil.rmtree(self.test_dir, ignore_errors=True)
     
     def test_init_repo(self):
         """Test repository initialization"""

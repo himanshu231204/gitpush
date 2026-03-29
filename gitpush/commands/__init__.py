@@ -10,6 +10,9 @@ from gitpush.commands.stash import stash, undo
 from gitpush.commands.github import new
 from gitpush.commands.theme import theme
 from gitpush.commands.graph import graph
+from gitpush.commands.commit_ai import commit_ai
+from gitpush.commands.pr_ai import pr_ai
+from gitpush.commands.review_ai import review_ai
 
 __all__ = [
     'push',
@@ -27,4 +30,7 @@ __all__ = [
     'new',
     'theme',
     'graph',
+    'commit_ai',
+    'pr_ai',
+    'review_ai',
 ]
