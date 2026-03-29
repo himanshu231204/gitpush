@@ -57,3 +57,7 @@ DEPLOYMENT_GUIDE.md
 QUICK_DEPLOY.md
 build_and_publish.sh
 PRIVATE_DOCS_README.md
+
+SPEC.md
+prompt.txt
+AGENTS.MD
