@@ -1,6 +1,7 @@
 """
 Stash and undo commands for gitpush.
 """
+
 import click
 
 from gitpush.core.git_operations import GitOperations
@@ -31,7 +32,7 @@ def undo():
         return
     if InteractiveUI.confirm_action("Undo last commit? (changes will be kept)"):
         try:
-            git_ops.repo.git.reset('HEAD~1', soft=True)
+            git_ops.repo.git.reset("HEAD~1", soft=True)
             show_success("Last commit undone (changes kept)")
         except Exception as e:
             show_error(f"Failed to undo: {str(e)}")

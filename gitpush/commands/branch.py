@@ -1,6 +1,7 @@
 """
 Branch, switch, and merge commands for gitpush.
 """
+
 import click
 
 from gitpush.core.git_operations import GitOperations
@@ -10,8 +11,8 @@ from gitpush.ui.interactive import InteractiveUI
 
 
 @click.command()
-@click.argument('name', required=False)
-@click.option('-d', '--delete', help='Delete branch')
+@click.argument("name", required=False)
+@click.option("-d", "--delete", help="Delete branch")
 def branch(name, delete):
     """Branch operations"""
     git_ops = GitOperations()
@@ -31,7 +32,7 @@ def branch(name, delete):
 
 
 @click.command()
-@click.argument('name')
+@click.argument("name")
 def switch(name):
     """Switch to a branch"""
     git_ops = GitOperations()
@@ -42,7 +43,7 @@ def switch(name):
 
 
 @click.command()
-@click.argument('branch')
+@click.argument("branch")
 def merge(branch):
     """Merge a branch"""
     git_ops = GitOperations()

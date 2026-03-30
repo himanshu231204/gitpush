@@ -1,6 +1,7 @@
 """
 Main CLI interface for run-git - Git Made Easy
 """
+
 import click
 
 from gitpush import __version__
@@ -31,16 +32,17 @@ from gitpush.commands import (
 
 @click.group(invoke_without_command=True)
 @click.pass_context
-@click.option('--version', '-v', is_flag=True, help='Show version')
+@click.option("--version", "-v", is_flag=True, help="Show version")
 def main(ctx, version):
     """run-git - Git Made Easy"""
     if version:
         click.echo(f"run-git version {__version__}")
         return
-    
+
     if ctx.invoked_subcommand is None:
         show_banner()
         from gitpush.ui.interactive import InteractiveUI
+
         interactive_mode = InteractiveUI()
         interactive_mode.main_menu()
 
@@ -68,5 +70,5 @@ main.add_command(ai_command)
 main.add_command(config_cmd)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

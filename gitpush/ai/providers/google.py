@@ -81,52 +81,43 @@ class GoogleProvider(BaseAIProvider):
 
         # All models failed
         error_hint = self._get_error_hint(str(last_error))
-        raise RuntimeError(
-            f"All Google models failed. Last error: {last_error}\n{error_hint}"
-        )
+        raise RuntimeError(f"All Google models failed. Last error: {last_error}\n{error_hint}")
 
-    def _generate_with_model(self, prompt: str, model: str, max_tokens: int, temperature: float) -> str:
+    def _generate_with_model(
+        self, prompt: str, model: str, max_tokens: int, temperature: float
+    ) -> str:
         """Generate text with a specific model."""
         url = self._get_formatted_url(model)
         logger.debug(f"Google Provider - Model: {model}, URL: {url[:60]}...")
 
         # Prepare request data for Gemini API
         data = {
-            "contents": [{
-                "parts": [{
-                    "text": prompt
-                }]
-            }],
+            "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "temperature": temperature,
                 "maxOutputTokens": max_tokens,
                 "topP": 0.8,
-                "topK": 10
-            }
+                "topK": 10,
+            },
         }
 
-        headers = {
-            "Content-Type": "application/json"
-        }
+        headers = {"Content-Type": "application/json"}
 
         req = urllib.request.Request(
-            url,
-            data=json.dumps(data).encode('utf-8'),
-            headers=headers,
-            method='POST'
+            url, data=json.dumps(data).encode("utf-8"), headers=headers, method="POST"
         )
 
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as response:
-                result = json.loads(response.read().decode('utf-8'))
+                result = json.loads(response.read().decode("utf-8"))
 
                 # Extract text from Gemini response
-                if 'candidates' in result and len(result['candidates']) > 0:
-                    candidate = result['candidates'][0]
-                    if 'content' in candidate and 'parts' in candidate['content']:
-                        parts = candidate['content']['parts']
-                        if len(parts) > 0 and 'text' in parts[0]:
-                            return parts[0]['text'].strip()
+                if "candidates" in result and len(result["candidates"]) > 0:
+                    candidate = result["candidates"][0]
+                    if "content" in candidate and "parts" in candidate["content"]:
+                        parts = candidate["content"]["parts"]
+                        if len(parts) > 0 and "text" in parts[0]:
+                            return parts[0]["text"].strip()
 
                 # Fallback if response format is unexpected
                 return str(result)
@@ -135,7 +126,7 @@ class GoogleProvider(BaseAIProvider):
             # Read error body once - HTTPError.read() can only be called once
             error_body = ""
             try:
-                error_body = e.read().decode('utf-8')
+                error_body = e.read().decode("utf-8")
             except Exception:
                 error_body = str(e)
 
@@ -170,6 +161,8 @@ class GoogleProvider(BaseAIProvider):
         if "401" in error_str or "Invalid API key" in error_str:
             return "Hint: Your Google API key may be invalid. Get one from https://aistudio.google.com/app/apikey"
         elif "404" in error_str:
-            return "Hint: The model may not be available. Try a different model in Configure Provider."
+            return (
+                "Hint: The model may not be available. Try a different model in Configure Provider."
+            )
         else:
             return "Hint: Check your Google Cloud console at https://console.cloud.google.com for status and quota."

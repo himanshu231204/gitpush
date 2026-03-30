@@ -2,9 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
-[1.3.0] - 2026-03-30
+[1.4.0] - 2026-03-30
 
-### 🔐 PRO Feature Gating System
+### 🤖 AI Assistant - Major Update
+
+* **Interactive AI Menu**:
+  * Full menu-driven AI configuration
+  * Provider selection (OpenAI, Anthropic, Google, Grok, Local)
+  * API key input with masked password
+  * Model selection from 50+ verified models
+
+* **Code Review Features**:
+  * **Full Review**: Review all changes in diff
+  * **Single File Review**: Review specific files (NEW!)
+  * **Detailed Analysis**: Bugs, Code Quality, Performance, Security, Best Practices
+  * **Styled Output**: Rich markdown rendering in terminal
+
+* **Provider Support** (50+ models):
+  * OpenAI: gpt-4o, o1, o3-mini, o4-mini
+  * Anthropic: claude-4-sonnet, claude-4-opus
+  * Google: gemini-2.0-flash, gemini-2.5-pro
+  * Grok: grok-2, grok-2-vision
+  * Local: llama3.3, qwen2.5, deepseek-r1
+
+* **Bug Fixes**:
+  * Fixed Full Review with staged/working changes
+  * Fixed missing imports in interactive mode
+  * Fixed circular import issues
+  * Consolidated imports at module top
+  * Added settings migration for old configs
+  * Improved error handling with helpful hints
+  * Automatic model fallback on API errors
+
+* **Code Quality**:
+  * Externalized prompt templates
+  * DRY principle in config defaults
+  * Better error messages for users
+
+### 🔐 PRO Feature Gating (from 1.3.0)
 
 * **Tiered Access**:
   * FREE users: commit-ai (5/day), pr-ai (2/day), review-ai (3/day)

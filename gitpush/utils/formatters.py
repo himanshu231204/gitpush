@@ -1,6 +1,7 @@
 """
 Output formatting utilities.
 """
+
 from typing import List, Dict, Any
 
 
@@ -21,8 +22,8 @@ def format_branch_list(branches: List[Dict[str, Any]]) -> str:
         return "No branches found"
     lines = []
     for branch in branches:
-        name = branch.get('name', '')
-        current = branch.get('current', False)
+        name = branch.get("name", "")
+        current = branch.get("current", False)
         prefix = "*" if current else " "
         lines.append(f"{prefix} {name}")
     return "\n".join(lines)
@@ -34,7 +35,7 @@ def format_remote_list(remotes: List[Dict[str, str]]) -> str:
         return "No remotes found"
     lines = []
     for remote in remotes:
-        name = remote.get('name', '')
-        url = remote.get('url', '')
+        name = remote.get("name", "")
+        url = remote.get("url", "")
         lines.append(f"{name}\t{url}")
     return "\n".join(lines)

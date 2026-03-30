@@ -10,7 +10,9 @@ from gitpush.utils.license import check_feature_access
 
 
 @click.command(name="review-ai")
-@click.option("--base", "base_branch", default=None, help="Base branch for diff (default from config)")
+@click.option(
+    "--base", "base_branch", default=None, help="Base branch for diff (default from config)"
+)
 @click.option("--head", "head_ref", default="HEAD", help="Head ref for diff (default: HEAD)")
 def review_ai(base_branch: str, head_ref: str) -> None:
     """Generate AI review for a pull-request diff."""

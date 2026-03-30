@@ -6,7 +6,9 @@ from typing import List
 def build_pr_prompt(diff: str, commit_messages: List[str]) -> str:
     """Build PR description prompt with strict output structure."""
 
-    commits_section = "\n".join(f"- {message}" for message in commit_messages) or "- No recent commits"
+    commits_section = (
+        "\n".join(f"- {message}" for message in commit_messages) or "- No recent commits"
+    )
 
     return f"""You are a senior developer.
 

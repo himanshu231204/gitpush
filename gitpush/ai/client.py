@@ -15,7 +15,9 @@ from gitpush.ai.providers.base import BaseAIProvider
 class AIClient:
     """Provider-agnostic AI client."""
 
-    def __init__(self, provider: Optional[BaseAIProvider] = None, config: Optional[AIConfig] = None):
+    def __init__(
+        self, provider: Optional[BaseAIProvider] = None, config: Optional[AIConfig] = None
+    ):
         self.config = config or AIConfig.from_env()
         self.provider = provider or AIProviderFactory.create(self.config)
 

@@ -1325,6 +1325,8 @@ class InteractiveUI:
                 InteractiveUI.show_log_table(commits)
 
             elif "ASCII" in choice or "Graph" in choice:
+                from click.testing import CliRunner
+
                 runner = CliRunner()
                 result = runner.invoke(
                     __import__("gitpush.commands.graph", fromlist=["graph"]).graph,
@@ -1352,7 +1354,11 @@ class InteractiveUI:
                         if 0 <= idx < len(commits):
                             commit_hash = commits[idx]["hash"]
                             # Lazy import to avoid circular import
-                            from gitpush.commands.graph import get_commit_details, display_commit_details
+                            from gitpush.commands.graph import (
+                                get_commit_details,
+                                display_commit_details,
+                            )
+
                             details = get_commit_details(
                                 git_ops, renderer, commit_hash, show_diff=True
                             )

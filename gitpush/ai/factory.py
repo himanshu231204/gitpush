@@ -1,4 +1,5 @@
 """Factory for creating AI providers."""
+
 from __future__ import annotations
 
 from gitpush.ai.config import AIConfig

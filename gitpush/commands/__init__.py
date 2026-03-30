@@ -1,6 +1,7 @@
 """
 Command modules for gitpush CLI.
 """
+
 from gitpush.commands.push import push
 from gitpush.commands.init import init_command
 from gitpush.commands.status import status, log
@@ -17,24 +18,24 @@ from gitpush.commands.ai import ai_command
 from gitpush.commands.config_cmd import config_cmd
 
 __all__ = [
-    'push',
-    'init_command',
-    'status',
-    'log',
-    'branch',
-    'switch',
-    'merge',
-    'remote',
-    'pull',
-    'sync',
-    'stash',
-    'undo',
-    'new',
-    'theme',
-    'graph',
-    'commit_ai',
-    'pr_ai',
-    'review_ai',
-    'ai_command',
-    'config_cmd',
+    "push",
+    "init_command",
+    "status",
+    "log",
+    "branch",
+    "switch",
+    "merge",
+    "remote",
+    "pull",
+    "sync",
+    "stash",
+    "undo",
+    "new",
+    "theme",
+    "graph",
+    "commit_ai",
+    "pr_ai",
+    "review_ai",
+    "ai_command",
+    "config_cmd",
 ]

@@ -76,7 +76,7 @@ That's it. One command does all four steps, auto-generates a meaningful commit m
 
 ---
 
-## 🤖 AI Assistant (v1.3.0)
+## 🤖 AI Assistant (v1.4.0)
 
 Get AI-powered code reviews, PR descriptions, and commit messages directly from your terminal.
 

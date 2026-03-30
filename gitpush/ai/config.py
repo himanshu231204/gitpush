@@ -1,4 +1,5 @@
 """Configuration model for AI providers."""
+
 from __future__ import annotations
 
 import os
@@ -25,7 +26,9 @@ class AIConfig:
     # Google (Gemini)
     google_api_key: str = ""
     google_model: str = "gemini-2.0-flash-exp"
-    google_base_url: str = "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
+    google_base_url: str = (
+        "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
+    )
 
     # Grok (xAI)
     grok_api_key: str = ""
@@ -65,63 +68,63 @@ class AIConfig:
                 "RUN_GIT_OPENAI_BASE_URL", "https://api.openai.com/v1/chat/completions"
             ).strip(),
             anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", "").strip(),
-            anthropic_model=os.getenv(
-                "RUN_GIT_ANTHROPIC_MODEL", "claude-3-5-haiku-latest"
-            ).strip(),
+            anthropic_model=os.getenv("RUN_GIT_ANTHROPIC_MODEL", "claude-3-5-haiku-latest").strip(),
             anthropic_base_url=os.getenv(
                 "RUN_GIT_ANTHROPIC_BASE_URL", "https://api.anthropic.com/v1/messages"
             ).strip(),
             google_api_key=os.getenv("GOOGLE_API_KEY", "").strip(),
-            google_model=os.getenv(
-                "RUN_GIT_GOOGLE_MODEL", "gemini-2.0-flash-exp"
-            ).strip(),
+            google_model=os.getenv("RUN_GIT_GOOGLE_MODEL", "gemini-2.0-flash-exp").strip(),
             google_base_url=os.getenv(
                 "RUN_GIT_GOOGLE_BASE_URL",
-                "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
+                "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent",
             ).strip(),
             grok_api_key=os.getenv("GROK_API_KEY", "").strip(),
-            grok_model=os.getenv(
-                "RUN_GIT_GROK_MODEL", "grok-beta"
-            ).strip(),
+            grok_model=os.getenv("RUN_GIT_GROK_MODEL", "grok-beta").strip(),
             grok_base_url=os.getenv(
-                "RUN_GIT_GROK_BASE_URL",
-                "https://api.x.ai/v1/chat/completions"
+                "RUN_GIT_GROK_BASE_URL", "https://api.x.ai/v1/chat/completions"
             ).strip(),
             local_model=os.getenv("RUN_GIT_LOCAL_MODEL", "llama3.2").strip(),
             local_base_url=os.getenv(
-                "RUN_GIT_LOCAL_BASE_URL",
-                "http://localhost:11434/api/generate"
+                "RUN_GIT_LOCAL_BASE_URL", "http://localhost:11434/api/generate"
             ).strip(),
-            max_commit_diff_chars=_int_env("RUN_GIT_MAX_COMMIT_DIFF_CHARS", cls.max_commit_diff_chars),
+            max_commit_diff_chars=_int_env(
+                "RUN_GIT_MAX_COMMIT_DIFF_CHARS", cls.max_commit_diff_chars
+            ),
             max_pr_diff_chars=_int_env("RUN_GIT_MAX_PR_DIFF_CHARS", cls.max_pr_diff_chars),
             chunk_size=_int_env("RUN_GIT_DIFF_CHUNK_SIZE", cls.chunk_size),
             default_base_branch=os.getenv("RUN_GIT_DEFAULT_BASE_BRANCH", "main").strip(),
-            default_commit_history_limit=_int_env("RUN_GIT_COMMIT_HISTORY_LIMIT", cls.default_commit_history_limit),
+            default_commit_history_limit=_int_env(
+                "RUN_GIT_COMMIT_HISTORY_LIMIT", cls.default_commit_history_limit
+            ),
         )
 
     @classmethod
     def from_settings(cls, settings) -> "AIConfig":
         """Build AI config from settings file (interactive mode)."""
         return cls(
-            provider=settings.get('ai_provider', 'local'),
-            request_timeout=settings.get('ai_request_timeout', cls.request_timeout),
-            openai_api_key=settings.get('ai_openai_api_key', ''),
-            openai_model=settings.get('ai_openai_model', cls.openai_model),
-            openai_base_url=settings.get('ai_openai_base_url', cls.openai_base_url),
-            anthropic_api_key=settings.get('ai_anthropic_api_key', ''),
-            anthropic_model=settings.get('ai_anthropic_model', cls.anthropic_model),
-            anthropic_base_url=settings.get('ai_anthropic_base_url', cls.anthropic_base_url),
-            google_api_key=settings.get('ai_google_api_key', ''),
-            google_model=settings.get('ai_google_model', cls.google_model),
-            google_base_url=settings.get('ai_google_base_url', cls.google_base_url),
-            grok_api_key=settings.get('ai_grok_api_key', ''),
-            grok_model=settings.get('ai_grok_model', cls.grok_model),
-            grok_base_url=settings.get('ai_grok_base_url', cls.grok_base_url),
-            local_model=settings.get('ai_local_model', cls.local_model),
-            local_base_url=settings.get('ai_local_base_url', cls.local_base_url),
-            max_commit_diff_chars=settings.get('ai_max_commit_diff_chars', cls.max_commit_diff_chars),
-            max_pr_diff_chars=settings.get('ai_max_pr_diff_chars', cls.max_pr_diff_chars),
-            chunk_size=settings.get('ai_chunk_size', cls.chunk_size),
-            default_base_branch=settings.get('ai_default_base_branch', cls.default_base_branch),
-            default_commit_history_limit=settings.get('ai_default_commit_history_limit', cls.default_commit_history_limit),
+            provider=settings.get("ai_provider", "local"),
+            request_timeout=settings.get("ai_request_timeout", cls.request_timeout),
+            openai_api_key=settings.get("ai_openai_api_key", ""),
+            openai_model=settings.get("ai_openai_model", cls.openai_model),
+            openai_base_url=settings.get("ai_openai_base_url", cls.openai_base_url),
+            anthropic_api_key=settings.get("ai_anthropic_api_key", ""),
+            anthropic_model=settings.get("ai_anthropic_model", cls.anthropic_model),
+            anthropic_base_url=settings.get("ai_anthropic_base_url", cls.anthropic_base_url),
+            google_api_key=settings.get("ai_google_api_key", ""),
+            google_model=settings.get("ai_google_model", cls.google_model),
+            google_base_url=settings.get("ai_google_base_url", cls.google_base_url),
+            grok_api_key=settings.get("ai_grok_api_key", ""),
+            grok_model=settings.get("ai_grok_model", cls.grok_model),
+            grok_base_url=settings.get("ai_grok_base_url", cls.grok_base_url),
+            local_model=settings.get("ai_local_model", cls.local_model),
+            local_base_url=settings.get("ai_local_base_url", cls.local_base_url),
+            max_commit_diff_chars=settings.get(
+                "ai_max_commit_diff_chars", cls.max_commit_diff_chars
+            ),
+            max_pr_diff_chars=settings.get("ai_max_pr_diff_chars", cls.max_pr_diff_chars),
+            chunk_size=settings.get("ai_chunk_size", cls.chunk_size),
+            default_base_branch=settings.get("ai_default_base_branch", cls.default_base_branch),
+            default_commit_history_limit=settings.get(
+                "ai_default_commit_history_limit", cls.default_commit_history_limit
+            ),
         )

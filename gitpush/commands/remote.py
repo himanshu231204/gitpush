@@ -1,6 +1,7 @@
 """
 Remote, pull, and sync commands for gitpush.
 """
+
 import click
 
 from gitpush.core.git_operations import GitOperations
@@ -8,9 +9,9 @@ from gitpush.ui.banner import show_error, show_info, show_success
 
 
 @click.command()
-@click.argument('name', required=False)
-@click.option('--add', help='Add remote URL')
-@click.option('--remove', is_flag=True, help='Remove remote')
+@click.argument("name", required=False)
+@click.option("--add", help="Add remote URL")
+@click.option("--remove", is_flag=True, help="Remove remote")
 def remote(name, add, remove):
     """Manage remote repositories"""
     git_ops = GitOperations()

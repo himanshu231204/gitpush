@@ -38,6 +38,7 @@ API_KEY_MIN_LENGTH = 20
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
+
 def _today() -> str:
     return str(date.today())
 
@@ -69,23 +70,18 @@ def get_api_key() -> Optional[str]:
 def is_pro_user() -> bool:
     """True when a valid-looking API key is configured."""
     key = get_api_key()
-    return (
-        key is not None
-        and key.startswith(API_KEY_PREFIX)
-        and len(key) >= API_KEY_MIN_LENGTH
-    )
+    return key is not None and key.startswith(API_KEY_PREFIX) and len(key) >= API_KEY_MIN_LENGTH
 
 
 def validate_api_key_format(key: str) -> bool:
     """Basic format check — must start with rg_ and be at least 20 chars."""
     return (
-        isinstance(key, str)
-        and key.startswith(API_KEY_PREFIX)
-        and len(key) >= API_KEY_MIN_LENGTH
+        isinstance(key, str) and key.startswith(API_KEY_PREFIX) and len(key) >= API_KEY_MIN_LENGTH
     )
 
 
 # ── Upgrade prompt ───────────────────────────────────────────────────────────
+
 
 def _show_upgrade_prompt(feature: str, tier: str) -> None:
     """Show the upgrade message and optionally open the browser."""
@@ -95,8 +91,7 @@ def _show_upgrade_prompt(feature: str, tier: str) -> None:
         console.print(f"  [bold yellow]{feature}[/bold yellow] is a PRO feature.")
     else:
         console.print(
-            f"  You've reached the daily free limit for "
-            f"[bold yellow]{feature}[/bold yellow]."
+            f"  You've reached the daily free limit for " f"[bold yellow]{feature}[/bold yellow]."
         )
 
     console.print()
@@ -116,6 +111,7 @@ def _show_upgrade_prompt(feature: str, tier: str) -> None:
 
 
 # ── Public gate function ─────────────────────────────────────────────────────
+
 
 def check_feature_access(feature: str) -> int:
     """Check whether the current user may use *feature*.

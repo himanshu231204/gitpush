@@ -1,6 +1,7 @@
 """
 Status and log commands for gitpush.
 """
+
 import click
 
 from gitpush.core.git_operations import GitOperations
@@ -21,8 +22,8 @@ def status():
 
 
 @click.command()
-@click.option('--max', default=10, help='Maximum number of commits')
-@click.option('--graph', is_flag=True, help='Show graph')
+@click.option("--max", default=10, help="Maximum number of commits")
+@click.option("--graph", is_flag=True, help="Show graph")
 def log(max, graph):
     """Show commit history"""
     git_ops = GitOperations()

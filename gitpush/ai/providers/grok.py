@@ -71,10 +71,7 @@ class GrokProvider(BaseAIProvider):
 
         # All models failed
         error_hint = self._get_error_hint(str(last_error))
-        raise RuntimeError(
-            f"All Grok models failed. Last error: {last_error}\n"
-            f"{error_hint}"
-        )
+        raise RuntimeError(f"All Grok models failed. Last error: {last_error}\n" f"{error_hint}")
 
     def _generate_with_model(
         self, prompt: str, model: str, max_tokens: int, temperature: float
@@ -85,39 +82,28 @@ class GrokProvider(BaseAIProvider):
         # Prepare request data for Grok API (OpenAI-compatible)
         data = {
             "model": model,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
+            "messages": [{"role": "user", "content": prompt}],
             "max_tokens": max_tokens,
             "temperature": temperature,
-            "stream": False
+            "stream": False,
         }
 
         # Prepare request
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}"
-        }
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"}
 
         req = urllib.request.Request(
-            self.base_url,
-            data=json.dumps(data).encode('utf-8'),
-            headers=headers,
-            method='POST'
+            self.base_url, data=json.dumps(data).encode("utf-8"), headers=headers, method="POST"
         )
 
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as response:
-                result = json.loads(response.read().decode('utf-8'))
+                result = json.loads(response.read().decode("utf-8"))
 
                 # Extract text from Grok response (OpenAI-compatible format)
-                if 'choices' in result and len(result['choices']) > 0:
-                    message = result['choices'][0].get('message', {})
-                    if 'content' in message:
-                        return message['content'].strip()
+                if "choices" in result and len(result["choices"]) > 0:
+                    message = result["choices"][0].get("message", {})
+                    if "content" in message:
+                        return message["content"].strip()
 
                 # Fallback if response format is unexpected
                 return str(result)
@@ -126,7 +112,7 @@ class GrokProvider(BaseAIProvider):
             # Read error body once - HTTPError.read() can only be called once
             error_body = ""
             try:
-                error_body = e.read().decode('utf-8')
+                error_body = e.read().decode("utf-8")
             except Exception:
                 error_body = str(e)
 
@@ -187,6 +173,4 @@ class GrokProvider(BaseAIProvider):
                 "Try updating to a different model in Configure Provider."
             )
         else:
-            return (
-                "Hint: Check your Grok account at https://console.x.ai for status and quota."
-            )
+            return "Hint: Check your Grok account at https://console.x.ai for status and quota."

@@ -25,6 +25,7 @@ class AIEngine:
     ) -> None:
         if config is None:
             settings = get_settings()
+
             # Helper to get value from environment or settings with fallback
             def _get_value(env_key: str, settings_key: str, default: str = "") -> str:
                 value = os.getenv(env_key)
@@ -47,110 +48,58 @@ class AIEngine:
                     return default
 
             config_dict = {
-                "provider": _get_value(
-                    "RUN_GIT_AI_PROVIDER",
-                    "ai_provider",
-                    "local"
-                ).lower(),
-                "request_timeout": _get_int_value(
-                    "RUN_GIT_AI_TIMEOUT",
-                    "ai_request_timeout",
-                    30
-                ),
-                "openai_api_key": _get_value(
-                    "OPENAI_API_KEY",
-                    "ai_openai_api_key",
-                    ""
-                ),
+                "provider": _get_value("RUN_GIT_AI_PROVIDER", "ai_provider", "local").lower(),
+                "request_timeout": _get_int_value("RUN_GIT_AI_TIMEOUT", "ai_request_timeout", 30),
+                "openai_api_key": _get_value("OPENAI_API_KEY", "ai_openai_api_key", ""),
                 "openai_model": _get_value(
-                    "RUN_GIT_OPENAI_MODEL",
-                    "ai_openai_model",
-                    "gpt-4o-mini"
+                    "RUN_GIT_OPENAI_MODEL", "ai_openai_model", "gpt-4o-mini"
                 ),
                 "openai_base_url": _get_value(
                     "RUN_GIT_OPENAI_BASE_URL",
                     "ai_openai_base_url",
-                    "https://api.openai.com/v1/chat/completions"
+                    "https://api.openai.com/v1/chat/completions",
                 ),
-                "anthropic_api_key": _get_value(
-                    "ANTHROPIC_API_KEY",
-                    "ai_anthropic_api_key",
-                    ""
-                ),
+                "anthropic_api_key": _get_value("ANTHROPIC_API_KEY", "ai_anthropic_api_key", ""),
                 "anthropic_model": _get_value(
-                    "RUN_GIT_ANTHROPIC_MODEL",
-                    "ai_anthropic_model",
-                    "claude-3-5-haiku-latest"
+                    "RUN_GIT_ANTHROPIC_MODEL", "ai_anthropic_model", "claude-3-5-haiku-latest"
                 ),
                 "anthropic_base_url": _get_value(
                     "RUN_GIT_ANTHROPIC_BASE_URL",
                     "ai_anthropic_base_url",
-                    "https://api.anthropic.com/v1/messages"
+                    "https://api.anthropic.com/v1/messages",
                 ),
-                "google_api_key": _get_value(
-                    "GOOGLE_API_KEY",
-                    "ai_google_api_key",
-                    ""
-                ),
-                "google_model": _get_value(
-                    "RUN_GIT_GOOGLE_MODEL",
-                    "ai_google_model",
-                    "gemini-pro"
-                ),
+                "google_api_key": _get_value("GOOGLE_API_KEY", "ai_google_api_key", ""),
+                "google_model": _get_value("RUN_GIT_GOOGLE_MODEL", "ai_google_model", "gemini-pro"),
                 "google_base_url": _get_value(
                     "RUN_GIT_GOOGLE_BASE_URL",
                     "ai_google_base_url",
-                    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+                    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                 ),
-                "grok_api_key": _get_value(
-                    "GROK_API_KEY",
-                    "ai_grok_api_key",
-                    ""
-                ),
-                "grok_model": _get_value(
-                    "RUN_GIT_GROK_MODEL",
-                    "ai_grok_model",
-                    "grok-beta"
-                ),
+                "grok_api_key": _get_value("GROK_API_KEY", "ai_grok_api_key", ""),
+                "grok_model": _get_value("RUN_GIT_GROK_MODEL", "ai_grok_model", "grok-beta"),
                 "grok_base_url": _get_value(
                     "RUN_GIT_GROK_BASE_URL",
                     "ai_grok_base_url",
-                    "https://api.x.ai/v1/chat/completions"
+                    "https://api.x.ai/v1/chat/completions",
                 ),
-                "local_model": _get_value(
-                    "RUN_GIT_LOCAL_MODEL",
-                    "ai_local_model",
-                    "llama3.2"
-                ),
+                "local_model": _get_value("RUN_GIT_LOCAL_MODEL", "ai_local_model", "llama3.2"),
                 "local_base_url": _get_value(
                     "RUN_GIT_LOCAL_BASE_URL",
                     "ai_local_base_url",
-                    "http://localhost:11434/api/generate"
+                    "http://localhost:11434/api/generate",
                 ),
                 "max_commit_diff_chars": _get_int_value(
-                    "RUN_GIT_MAX_COMMIT_DIFF_CHARS",
-                    "ai_max_commit_diff_chars",
-                    12000
+                    "RUN_GIT_MAX_COMMIT_DIFF_CHARS", "ai_max_commit_diff_chars", 12000
                 ),
                 "max_pr_diff_chars": _get_int_value(
-                    "RUN_GIT_MAX_PR_DIFF_CHARS",
-                    "ai_max_pr_diff_chars",
-                    40000
+                    "RUN_GIT_MAX_PR_DIFF_CHARS", "ai_max_pr_diff_chars", 40000
                 ),
-                "chunk_size": _get_int_value(
-                    "RUN_GIT_DIFF_CHUNK_SIZE",
-                    "ai_chunk_size",
-                    8000
-                ),
+                "chunk_size": _get_int_value("RUN_GIT_DIFF_CHUNK_SIZE", "ai_chunk_size", 8000),
                 "default_base_branch": _get_value(
-                    "RUN_GIT_DEFAULT_BASE_BRANCH",
-                    "ai_default_base_branch",
-                    "main"
+                    "RUN_GIT_DEFAULT_BASE_BRANCH", "ai_default_base_branch", "main"
                 ),
                 "default_commit_history_limit": _get_int_value(
-                    "RUN_GIT_COMMIT_HISTORY_LIMIT",
-                    "ai_default_commit_history_limit",
-                    8
+                    "RUN_GIT_COMMIT_HISTORY_LIMIT", "ai_default_commit_history_limit", 8
                 ),
             }
             config = AIConfig(**config_dict)

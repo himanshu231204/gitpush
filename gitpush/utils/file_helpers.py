@@ -1,14 +1,20 @@
 """
 File operation utilities.
 """
+
 import os
 import fnmatch
 from typing import List
 
-
 SENSITIVE_PATTERNS = [
-    '.env', '.env.local', '*.pem', '*.key', '*.secret',
-    '*.credentials', 'secrets.yaml', 'secrets.json',
+    ".env",
+    ".env.local",
+    "*.pem",
+    "*.key",
+    "*.secret",
+    "*.credentials",
+    "secrets.yaml",
+    "secrets.json",
 ]
 
 
@@ -36,7 +42,7 @@ def find_sensitive_files(path: str = ".") -> List[str]:
     """Find sensitive files in the given path."""
     sensitive = []
     for root, dirs, files in os.walk(path):
-        if '.git' in root:
+        if ".git" in root:
             continue
         for filename in files:
             filepath = os.path.join(root, filename)

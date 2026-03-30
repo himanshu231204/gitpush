@@ -1,6 +1,7 @@
 """
 Banner and UI elements for run-git
 """
+
 import sys
 import time
 import threading
@@ -13,54 +14,56 @@ from rich.panel import Panel
 from gitpush import __version__
 
 # Custom theme
-custom_theme = Theme({
-    "success": "bold green",
-    "error": "bold red",
-    "warning": "bold yellow",
-    "info": "bold cyan",
-    "accent": "bold magenta",
-    "dim": "dim",
-})
+custom_theme = Theme(
+    {
+        "success": "bold green",
+        "error": "bold red",
+        "warning": "bold yellow",
+        "info": "bold cyan",
+        "accent": "bold magenta",
+        "dim": "dim",
+    }
+)
 
 console = Console(theme=custom_theme, legacy_windows=False, emoji=False)
 
 
 class ThemeManager:
     """Manage CLI color themes"""
-    
+
     THEMES = {
-        'default': {
-            'primary': 'cyan',
-            'secondary': 'green', 
-            'accent': 'magenta',
-            'success': 'green',
-            'error': 'red',
-            'warning': 'yellow',
+        "default": {
+            "primary": "cyan",
+            "secondary": "green",
+            "accent": "magenta",
+            "success": "green",
+            "error": "red",
+            "warning": "yellow",
         },
-        'dark': {
-            'primary': 'bright_cyan',
-            'secondary': 'bright_green', 
-            'accent': 'bright_magenta',
-            'success': 'bright_green',
-            'error': 'bright_red',
-            'warning': 'bright_yellow',
+        "dark": {
+            "primary": "bright_cyan",
+            "secondary": "bright_green",
+            "accent": "bright_magenta",
+            "success": "bright_green",
+            "error": "bright_red",
+            "warning": "bright_yellow",
         },
-        'light': {
-            'primary': 'blue',
-            'secondary': 'green',
-            'accent': 'purple',
-            'success': 'green',
-            'error': 'red',
-            'warning': 'yellow',
+        "light": {
+            "primary": "blue",
+            "secondary": "green",
+            "accent": "purple",
+            "success": "green",
+            "error": "red",
+            "warning": "yellow",
         },
     }
-    
-    def __init__(self, theme_name='default'):
+
+    def __init__(self, theme_name="default"):
         self.theme_name = theme_name
-        self.colors = self.THEMES.get(theme_name, self.THEMES['default'])
-    
+        self.colors = self.THEMES.get(theme_name, self.THEMES["default"])
+
     def get(self, key):
-        return self.colors.get(key, 'cyan')
+        return self.colors.get(key, "cyan")
 
 
 # Global theme instance
@@ -143,7 +146,9 @@ def show_progress(message):
 
 def show_step(step, total, message):
     """Show progress step (e.g., 2/4)"""
-    console.print(f"[{current_theme.colors['primary']}][{step}/{total}][/{current_theme.colors['primary']}] {message}")
+    console.print(
+        f"[{current_theme.colors['primary']}][{step}/{total}][/{current_theme.colors['primary']}] {message}"
+    )
 
 
 def show_keyhint(keys):
@@ -155,24 +160,22 @@ def show_keyhint(keys):
 # Loading spinner for operations
 class Spinner:
     """Animated spinner for long operations"""
-    
-    FRAMES = [
-        "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"
-    ]
-    
+
+    FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+
     def __init__(self, message="Loading"):
         self.message = message
         self.frame = 0
         self.running = False
-    
+
     def __enter__(self):
         self.running = True
         return self
-    
+
     def __exit__(self, *args):
         self.running = False
         console.print("")
-    
+
     def update(self, message=None):
         """Update spinner frame"""
         if message:
@@ -184,9 +187,11 @@ class Spinner:
 
 def loading_spinner(func):
     """Decorator for spinner on functions"""
+
     def wrapper(*args, **kwargs):
         with Spinner("Processing..."):
             return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -194,17 +199,17 @@ def loading_spinner(func):
 def colorize_status(status):
     """Return colorized status text"""
     colors = {
-        'added': current_theme.colors['success'],
-        'modified': current_theme.colors['warning'],
-        'deleted': current_theme.colors['error'],
-        'untracked': current_theme.colors['primary'],
-        'renamed': current_theme.colors['accent'],
+        "added": current_theme.colors["success"],
+        "modified": current_theme.colors["warning"],
+        "deleted": current_theme.colors["error"],
+        "untracked": current_theme.colors["primary"],
+        "renamed": current_theme.colors["accent"],
     }
-    
+
     def colorize(text, status_type):
-        color = colors.get(status_type, 'white')
+        color = colors.get(status_type, "white")
         return f"[{color}]{text}[/{color}]"
-    
+
     return colorize
 
 
@@ -216,17 +221,17 @@ def show_suggestion(command, explanation):
 
 # Keyboard shortcut display
 KEYBOARD_SHORTCUTS = {
-    '?': 'Show help',
-    'h': 'Help menu', 
-    'q': 'Quit',
-    'r': 'Refresh',
-    'p': 'Quick push',
-    's': 'Status',
-    'g': 'Commit graph',
-    'b': 'Branch menu',
-    'c': 'Cancel',
-    'enter': 'Confirm',
-    'esc': 'Go back',
+    "?": "Show help",
+    "h": "Help menu",
+    "q": "Quit",
+    "r": "Refresh",
+    "p": "Quick push",
+    "s": "Status",
+    "g": "Commit graph",
+    "b": "Branch menu",
+    "c": "Cancel",
+    "enter": "Confirm",
+    "esc": "Go back",
 }
 
 
@@ -234,19 +239,19 @@ def show_shortcuts():
     """Show available keyboard shortcuts"""
     from rich.table import Table
     from rich.panel import Panel
-    
+
     table = Table(show_header=True, header_style=f"bold {current_theme.colors['primary']}")
     table.add_column("Key", style="yellow", width=8)
     table.add_column("Action", style="white")
-    
+
     for key, action in KEYBOARD_SHORTCUTS.items():
         table.add_row(f"[bold]{key}[/]", action)
-    
+
     panel = Panel(
         table,
         title=f"[{current_theme.colors['primary']}]⌨  Keyboard Shortcuts[/{current_theme.colors['primary']}]",
-        border_style=current_theme.colors['primary'],
-        box=box.ROUNDED
+        border_style=current_theme.colors["primary"],
+        box=box.ROUNDED,
     )
     console.print(panel)
 

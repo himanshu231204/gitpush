@@ -1,6 +1,7 @@
 """
 Input validation utilities.
 """
+
 from gitpush.exceptions import ValidationError
 
 
@@ -8,11 +9,11 @@ def validate_branch_name(name: str) -> bool:
     """Validate Git branch name."""
     if not name:
         raise ValidationError("Branch name cannot be empty")
-    invalid_chars = [' ', '~', '^', ':', '\\', '*', '?', '[']
+    invalid_chars = [" ", "~", "^", ":", "\\", "*", "?", "["]
     for char in invalid_chars:
         if char in name:
             raise ValidationError(f"Branch name cannot contain '{char}'")
-    if name.startswith('/') or name.endswith('/'):
+    if name.startswith("/") or name.endswith("/"):
         raise ValidationError("Branch name cannot start or end with '/'")
     return True
 
@@ -21,7 +22,7 @@ def validate_remote_name(name: str) -> bool:
     """Validate remote name."""
     if not name:
         raise ValidationError("Remote name cannot be empty")
-    invalid_chars = [' ', '~', '^', ':', '\\', '*', '?', '[']
+    invalid_chars = [" ", "~", "^", ":", "\\", "*", "?", "["]
     for char in invalid_chars:
         if char in name:
             raise ValidationError(f"Remote name cannot contain '{char}'")

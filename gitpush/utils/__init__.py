@@ -1,6 +1,7 @@
 """
 Utility modules for gitpush.
 """
+
 from gitpush.utils.validators import (
     validate_branch_name,
     validate_remote_name,

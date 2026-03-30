@@ -7,7 +7,7 @@ def _load_template(filename: str) -> str:
     """Load prompt template from the prompts directory."""
     prompts_dir = os.path.dirname(os.path.abspath(__file__))
     template_path = os.path.join(prompts_dir, filename)
-    with open(template_path, 'r', encoding='utf-8') as f:
+    with open(template_path, "r", encoding="utf-8") as f:
         return f.read()
 
 
