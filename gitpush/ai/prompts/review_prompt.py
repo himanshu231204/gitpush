@@ -1,45 +1,17 @@
 """Prompt template for AI PR review."""
 
+import os
+
+
+def _load_template(filename: str) -> str:
+    """Load prompt template from the prompts directory."""
+    prompts_dir = os.path.dirname(os.path.abspath(__file__))
+    template_path = os.path.join(prompts_dir, filename)
+    with open(template_path, 'r', encoding='utf-8') as f:
+        return f.read()
+
 
 def build_review_prompt(diff: str) -> str:
-    """Build PR review prompt grounded in diff analysis."""
-
-    return f"""Act as a senior engineer reviewing a pull request.
-
-Analyze the code and find:
-- Bugs
-- Code quality issues
-- Performance issues
-- Best practice improvements
-
-Rules:
-- Be precise
-- Do not hallucinate
-- Only comment on real issues visible in diff
-- Give actionable suggestions
-
-Preferred output categories:
-⚠️ Bug:
-Description
-
-Fix:
-Suggested fix
-
-💡 Code Smell:
-Description
-
-Suggestion:
-Improvement
-
-🚀 Performance:
-Issue
-
-Optimization:
-Suggested fix
-
-📌 Best Practice:
-Suggestion
-
-Code:
-{diff}
-"""
+    """Build comprehensive PR review prompt for thorough analysis."""
+    template = _load_template("review_prompt_template.md")
+    return template.format(diff=diff)

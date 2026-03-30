@@ -35,4 +35,4 @@ class AIClient:
         """Generate PR review feedback from diff."""
 
         prompt = build_review_prompt(cleaned_diff)
-        return self.provider.generate(prompt=prompt, max_tokens=1200, temperature=0.1)
+        return self.provider.generate(prompt=prompt, max_tokens=3000, temperature=0.1)

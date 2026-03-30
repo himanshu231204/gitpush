@@ -37,9 +37,9 @@ class Settings:
         'ai_grok_base_url': 'https://api.x.ai/v1/chat/completions',
         'ai_local_model': 'llama3.2',
         'ai_local_base_url': 'http://localhost:11434/api/generate',
-        'ai_max_commit_diff_chars': 12000,
-        'ai_max_pr_diff_chars': 40000,
-        'ai_chunk_size': 8000,
+        'ai_max_commit_diff_chars': 15000,
+        'ai_max_pr_diff_chars': 60000,
+        'ai_chunk_size': 10000,
         'ai_default_base_branch': 'main',
         'ai_default_commit_history_limit': 8,
     }
@@ -63,6 +63,35 @@ class Settings:
                 self._config.update(user_config)
         except (json.JSONDecodeError, IOError) as e:
             raise ConfigurationError(f"Invalid config file: {e}")
+        
+        # Migrate old settings to new format
+        self._migrate_old_settings()
+    
+    def _migrate_old_settings(self) -> None:
+        """Migrate old settings to new format."""
+        # Fix old Google base URL (v1beta -> v1)
+        old_google_url = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        current_google_url = self._config.get('ai_google_base_url', '')
+        
+        if current_google_url == old_google_url:
+            self._config['ai_google_base_url'] = "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
+        
+        # Also migrate if no URL is set (will use default from AIConfig)
+        if not current_google_url:
+            self._config['ai_google_base_url'] = "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
+        
+        # Set default model if not set
+        if not self._config.get('ai_google_model'):
+            self._config['ai_google_model'] = "gemini-2.0-flash-exp"
+        
+        if not self._config.get('ai_grok_model'):
+            self._config['ai_grok_model'] = "grok-2"
+        
+        if not self._config.get('ai_openai_model'):
+            self._config['ai_openai_model'] = "gpt-4o"
+        
+        if not self._config.get('ai_anthropic_model'):
+            self._config['ai_anthropic_model'] = "claude-sonnet-4-20250514"
 
     def save(self) -> None:
         try:

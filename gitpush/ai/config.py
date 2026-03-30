@@ -24,8 +24,8 @@ class AIConfig:
 
     # Google (Gemini)
     google_api_key: str = ""
-    google_model: str = "gemini-pro"
-    google_base_url: str = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+    google_model: str = "gemini-2.0-flash-exp"
+    google_base_url: str = "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
 
     # Grok (xAI)
     grok_api_key: str = ""
@@ -37,9 +37,9 @@ class AIConfig:
     local_base_url: str = "http://localhost:11434/api/generate"
 
     # Common settings
-    max_commit_diff_chars: int = 12000
-    max_pr_diff_chars: int = 40000
-    chunk_size: int = 8000
+    max_commit_diff_chars: int = 15000
+    max_pr_diff_chars: int = 60000
+    chunk_size: int = 10000
     default_base_branch: str = "main"
     default_commit_history_limit: int = 8
 
@@ -73,11 +73,11 @@ class AIConfig:
             ).strip(),
             google_api_key=os.getenv("GOOGLE_API_KEY", "").strip(),
             google_model=os.getenv(
-                "RUN_GIT_GOOGLE_MODEL", "gemini-pro"
+                "RUN_GIT_GOOGLE_MODEL", "gemini-2.0-flash-exp"
             ).strip(),
             google_base_url=os.getenv(
                 "RUN_GIT_GOOGLE_BASE_URL",
-                "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+                "https://generativelanguage.googleapis.com/v1/models/{model}:generateContent"
             ).strip(),
             grok_api_key=os.getenv("GROK_API_KEY", "").strip(),
             grok_model=os.getenv(
@@ -92,9 +92,36 @@ class AIConfig:
                 "RUN_GIT_LOCAL_BASE_URL",
                 "http://localhost:11434/api/generate"
             ).strip(),
-            max_commit_diff_chars=_int_env("RUN_GIT_MAX_COMMIT_DIFF_CHARS", 12000),
-            max_pr_diff_chars=_int_env("RUN_GIT_MAX_PR_DIFF_CHARS", 40000),
-            chunk_size=_int_env("RUN_GIT_DIFF_CHUNK_SIZE", 8000),
+            max_commit_diff_chars=_int_env("RUN_GIT_MAX_COMMIT_DIFF_CHARS", cls.max_commit_diff_chars),
+            max_pr_diff_chars=_int_env("RUN_GIT_MAX_PR_DIFF_CHARS", cls.max_pr_diff_chars),
+            chunk_size=_int_env("RUN_GIT_DIFF_CHUNK_SIZE", cls.chunk_size),
             default_base_branch=os.getenv("RUN_GIT_DEFAULT_BASE_BRANCH", "main").strip(),
-            default_commit_history_limit=_int_env("RUN_GIT_COMMIT_HISTORY_LIMIT", 8),
+            default_commit_history_limit=_int_env("RUN_GIT_COMMIT_HISTORY_LIMIT", cls.default_commit_history_limit),
+        )
+
+    @classmethod
+    def from_settings(cls, settings) -> "AIConfig":
+        """Build AI config from settings file (interactive mode)."""
+        return cls(
+            provider=settings.get('ai_provider', 'local'),
+            request_timeout=settings.get('ai_request_timeout', cls.request_timeout),
+            openai_api_key=settings.get('ai_openai_api_key', ''),
+            openai_model=settings.get('ai_openai_model', cls.openai_model),
+            openai_base_url=settings.get('ai_openai_base_url', cls.openai_base_url),
+            anthropic_api_key=settings.get('ai_anthropic_api_key', ''),
+            anthropic_model=settings.get('ai_anthropic_model', cls.anthropic_model),
+            anthropic_base_url=settings.get('ai_anthropic_base_url', cls.anthropic_base_url),
+            google_api_key=settings.get('ai_google_api_key', ''),
+            google_model=settings.get('ai_google_model', cls.google_model),
+            google_base_url=settings.get('ai_google_base_url', cls.google_base_url),
+            grok_api_key=settings.get('ai_grok_api_key', ''),
+            grok_model=settings.get('ai_grok_model', cls.grok_model),
+            grok_base_url=settings.get('ai_grok_base_url', cls.grok_base_url),
+            local_model=settings.get('ai_local_model', cls.local_model),
+            local_base_url=settings.get('ai_local_base_url', cls.local_base_url),
+            max_commit_diff_chars=settings.get('ai_max_commit_diff_chars', cls.max_commit_diff_chars),
+            max_pr_diff_chars=settings.get('ai_max_pr_diff_chars', cls.max_pr_diff_chars),
+            chunk_size=settings.get('ai_chunk_size', cls.chunk_size),
+            default_base_branch=settings.get('ai_default_base_branch', cls.default_base_branch),
+            default_commit_history_limit=settings.get('ai_default_commit_history_limit', cls.default_commit_history_limit),
         )

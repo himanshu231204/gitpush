@@ -204,6 +204,12 @@ class AIEngine:
 
         return self.ai_client.generate_review(cleaned)
 
+    def generate_review_from_diff(self, diff: str) -> str:
+        """Generate AI review from provided diff string."""
+        self._ensure_repo()
+        cleaned = self._prepare_diff(raw_diff=diff, max_chars=self.config.max_pr_diff_chars)
+        return self.ai_client.generate_review(cleaned)
+
     def _prepare_diff(self, raw_diff: str, max_chars: int) -> str:
         prepared = self.diff_cleaner.prepare_for_ai(
             raw_diff=raw_diff,
