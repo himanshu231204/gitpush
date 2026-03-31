@@ -1,4 +1,4 @@
-# Architecture of `run-git` (`gitpush`)
+# Architecture of `run-git`
 
 ## Table of Contents
 
@@ -17,13 +17,14 @@
 
 ## Overview
 
-`run-git` is a Python CLI tool that wraps common Git and GitHub operations into intuitive, single commands with smart defaults and automation. It is published to PyPI as the `run-git` package (version `1.0.9`) and installed globally as the `run-git` command.
+`run-git` is a Python CLI tool that wraps common Git and GitHub operations into intuitive, single commands with smart defaults and automation. It is published to PyPI as the `run-git` package (version `1.4.0`) and installed globally as the `run-git` command.
 
 **Primary goals:**
 - Remove the need to memorise multiple Git subcommands for daily workflows.
 - Auto-generate conventional commit messages based on the types of files changed.
 - Provide an interactive terminal UI for users who prefer menu-driven operation.
 - Integrate directly with the GitHub API for repository creation, branching, and remote management.
+- AI-powered features: commit messages, code reviews, PR descriptions.
 
 ---
 
@@ -41,16 +42,29 @@ gitpush/                          ← repository root
 │   └── QUICKSTART.md             ← end-user quick-start guide
 │
 ├── gitpush/                      ← installable Python package
-│   ├── __init__.py               ← package version (1.0.9)
+│   ├── __init__.py               ← package version (1.4.0)
 │   ├── __main__.py               ← `python -m gitpush` entry point
-│   ├── cli.py                    ← Click CLI commands (~992 lines)
+│   ├── cli.py                    ← Click CLI commands
+│   ├── exceptions.py             ← custom exceptions
+│   │
+│   ├── commands/                 ← modular command handlers
+│   │   ├── __init__.py
+│   │   ├── push.py              ← push command
+│   │   ├── init.py              ← init/clone command
+│   │   ├── status.py            ← status command
+│   │   ├── branch.py            ← branch operations
+│   │   ├── remote.py            ← remote management
+│   │   ├── stash.py             ← stash operations
+│   │   ├── github.py            ← GitHub integration
+│   │   ├── graph.py             ← commit graph visualization
+│   │   └── undo.py              ← undo command
 │   │
 │   ├── core/                     ← business logic (no UI dependencies)
 │   │   ├── __init__.py
-│   │   ├── git_operations.py     ← GitPython wrapper (277 lines)
+│   │   ├── git_operations.py     ← GitPython wrapper
 │   │   ├── commit_generator.py   ← Conventional Commits generator
 │   │   ├── conflict_resolver.py  ← interactive merge conflict helper
-│   │   └── github_manager.py     ← PyGithub / GitHub API integration (222 lines)
+│   │   └── github_manager.py     ← PyGithub / GitHub API integration
 │   │
 │   ├── ui/                       ← presentation layer
 │   │   ├── __init__.py
@@ -58,12 +72,19 @@ gitpush/                          ← repository root
 │   │   └── interactive.py        ← Questionary-based prompts & tables
 │   │
 │   ├── utils/                    ← shared utilities
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── validators.py        ← input validation
+│   │   ├── formatters.py         ← output formatting
+│   │   └── file_helpers.py      ← file operations
 │   │
-│   └── config/
+│   ├── config/                   ← configuration
+│   │   ├── __init__.py
+│   │   └── settings.py          ← settings management
+│   │
+│   └── ai/                       ← AI features
 │       ├── __init__.py
-│       └── templates/
-│           └── .gitignore        ← default gitignore template
+│       ├── provider.py          ← AI provider abstraction
+│       └── prompts/             ← prompt templates
 │
 ├── tests/
 │   ├── __init__.py
@@ -84,14 +105,14 @@ gitpush/                          ← repository root
 
 ## Architectural Layers
 
-The codebase follows a clean **three-tier layered architecture**:
+The codebase follows a clean **four-tier layered architecture**:
 
 ```
 ┌──────────────────────────────────────────────┐
-│               CLI Layer  (cli.py)            │
+│         CLI Layer  (cli.py + commands/)      │
 │  • Click command groups & option parsing     │
 │  • Interactive TUI menu routing              │
-│  • 15+ command handlers                      │
+│  • 15+ command handlers (in commands/)      │
 └────────────────────┬─────────────────────────┘
                      │ calls
        ┌─────────────┴──────────────┐
@@ -102,6 +123,9 @@ The codebase follows a clean **three-tier layered architecture**:
 │ git_operations    │  │ banner.py                │
 │ commit_generator  │  │ (Rich console output)    │
 │ conflict_resolver │  │ interactive.py           │
+│ github_manager    │  │ (Questionary prompts &   │
+└───────────────────┘  │  Rich tables)            │
+                       └──────────────────────────┘
 │ github_manager    │  │ (Questionary prompts &   │
 └───────────────────┘  │  Rich tables)            │
                        └──────────────────────────┘
@@ -129,26 +153,26 @@ The codebase follows a clean **three-tier layered architecture**:
 Registered as `run-git = gitpush.cli:main` via `pyproject.toml`.
 
 - Uses Click's `@group(invoke_without_command=True)` to fall back to the interactive TUI when no subcommand is given.
-- Exposes the following Click commands:
+- Delegates to modular command handlers in `commands/` directory.
 
-| Command | Flag / Arg | Description |
-|---------|-----------|-------------|
-| `run-git` | _(none)_ | Launch interactive TUI |
-| `run-git push` | `-m MESSAGE` | Stage → commit (auto or custom) → pull → push |
-| `run-git new NAME` | `--private` | Create a new GitHub repository |
-| `run-git init` | `[URL]` | Initialise local repo or clone from URL |
-| `run-git status` | | Rich status table |
-| `run-git log` | `--max N` | Commit history table |
-| `run-git branch` | `[NAME]` | List branches or create a new one |
-| `run-git switch` | `BRANCH` | Checkout a branch |
-| `run-git merge` | `BRANCH` | Merge a branch into current |
-| `run-git pull` | | Pull from remote |
-| `run-git sync` | | Pull then push |
-| `run-git remote` | | Manage remote URLs |
-| `run-git stash` | | Stash / pop changes |
-| `run-git undo` | | Undo the last commit |
+### `commands/` — Modular Command Handlers
 
-Internal handler functions (`handle_*`) separate routing logic from the Click decorators.
+The `commands/` directory contains isolated command modules for maintainability:
+
+| Module | Command | Description |
+|--------|---------|-------------|
+| `push.py` | `run-git push` | Stage → commit (auto/custom) → pull → push |
+| `init.py` | `run-git init` | Initialize local repo or clone from URL |
+| `status.py` | `run-git status`, `run-git log` | Rich status table, commit history |
+| `branch.py` | `run-git branch`, `run-git switch`, `run-git merge` | Branch operations |
+| `remote.py` | `run-git remote` | Manage remote URLs |
+| `stash.py` | `run-git stash` | Stash/pop changes |
+| `github.py` | `run-git new` | Create GitHub repository |
+| `graph.py` | `run-git graph` | Commit graph visualization |
+| `undo.py` | `run-git undo` | Undo last commit |
+| `config.py` | `run-git config` | Configuration management |
+
+**Design principle**: Each command is isolated in its own module. CLI orchestration (`cli.py`) parses args, calls the appropriate command module, and renders output.
 
 ---
 
@@ -417,4 +441,4 @@ run-git (cli.py)
 
 ---
 
-*This document describes the architecture of `run-git` v1.0.9.*
+*This document describes the architecture of `run-git` v1.4.0.*

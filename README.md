@@ -8,7 +8,7 @@
 [![Downloads](https://static.pepy.tech/badge/run-git)](https://pepy.tech/project/run-git)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Stars](https://img.shields.io/github/stars/himanshu231204/gitpush)](https://github.com/himanshu231204/gitpush/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/himanshu231204/run-git)](https://github.com/himanshu231204/run-git/stargazers)
 
 </div>
 
@@ -165,7 +165,7 @@ Contributions, bug reports, and feature requests are welcome.
 
 ```bash
 # Clone and setup
-git clone https://github.com/himanshu231204/gitpush.git
+git clone https://github.com/himanshu231204/run-git.git
 cd gitpush
 
 # Install in development mode
@@ -193,6 +193,6 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
 
 If RUN-GIT saves you time, please consider giving it a ⭐ — it helps others find the project!
 
-[![Star History Chart](https://api.star-history.com/svg?repos=himanshu231204/gitpush&type=Date)](https://star-history.com/#himanshu231204/gitpush&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=himanshu231204/run-git&type=Date)](https://star-history.com/#himanshu231204/run-git&Date)
 
 </div>

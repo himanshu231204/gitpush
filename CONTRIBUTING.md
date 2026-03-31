@@ -1,12 +1,12 @@
-# Contributing to GITPUSH
+# Contributing to RUN-GIT
 
 Thank you for considering contributing! 🎉
 
 ## How to Contribute
 
 1. Fork the repository
-2. Create your feature branch (`gitpush branch feature/amazing`)
-3. Commit your changes (`gitpush push`)
+2. Create your feature branch (`git checkout -b feature/amazing`)
+3. Commit your changes (`run-git push`)
 4. Open a Pull Request
 
 ## Reporting Bugs

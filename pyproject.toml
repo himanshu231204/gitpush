@@ -41,10 +41,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/himanshu231204/gitpush"
-Documentation = "https://github.com/himanshu231204/gitpush#readme"
-Repository = "https://github.com/himanshu231204/gitpush"
-"Bug Tracker" = "https://github.com/himanshu231204/gitpush/issues"
+Homepage = "https://github.com/himanshu231204/run-git"
+Documentation = "https://github.com/himanshu231204/run-git#readme"
+Repository = "https://github.com/himanshu231204/run-git"
+"Bug Tracker" = "https://github.com/himanshu231204/run-git/issues"
 
 [project.scripts]
 run-git = "gitpush.cli:main"

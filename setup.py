@@ -11,7 +11,7 @@ setup(
     description="Git automation CLI — one command to add, commit, pull & push with smart commit messages, TUI, and GitHub repo creation",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/himanshu231204/gitpush",
+    url="https://github.com/himanshu231204/run-git",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
