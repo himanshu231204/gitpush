@@ -10,6 +10,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Stars](https://img.shields.io/github/stars/himanshu231204/run-git)](https://github.com/himanshu231204/run-git/stargazers)
 
+![RUN-GIT Hero](docs/images/run-git%20hero.png)
+
 </div>
 
 ---
@@ -21,6 +23,22 @@ RUN-GIT is a Python-powered CLI that simplifies Git workflows into single, intui
 **Use case**: Developers who run the same Git commands dozens of times daily and want a faster way to commit and push.
 
 [📦 Installation](#installation) · [🚀 Quick Start](#quick-start) · [📖 Commands](#command-reference) · [🏗️ Architecture](#architecture)
+
+---
+
+## Quick Push
+
+![Quick Push](docs/images/quickpush.png)
+
+One command does everything: `run-git push`
+
+---
+
+## AI Assistant
+
+![AI Assistant](docs/images/ai-assistant.png)
+
+Get AI-powered code reviews, PR descriptions, and commit messages directly from your terminal.
 
 ---
 
@@ -37,6 +55,7 @@ RUN-GIT is a Python-powered CLI that simplifies Git workflows into single, intui
 | **Secret File Guard** | Warns before accidentally pushing sensitive files (`.env`, tokens) |
 | **Conflict Helper** | Guided interactive merge conflict resolution |
 | **Rich Status View** | Color-coded table-based status output |
+| **AI Assistant** | Generate commit messages, code reviews, and PR descriptions with AI |
 
 ---
 
