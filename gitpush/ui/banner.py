@@ -28,60 +28,6 @@ custom_theme = Theme(
 console = Console(theme=custom_theme, legacy_windows=False, emoji=False)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# DESIGN TOKENS SYSTEM
-# ══════════════════════════════════════════════════════════════════════════════
-
-class DesignTokens:
-    """Unified design tokens for consistent UI across the application."""
-    
-    # Spacing
-    SPACING = {
-        "tight": 0,
-        "small": 1,
-        "medium": 2,
-        "large": 3,
-        "xlarge": 4,
-    }
-    
-    # Typography
-    TYPOGRAPHY = {
-        "heading": "bold",
-        "body": "normal",
-        "dim": "dim",
-        "code": "italic",
-    }
-    
-    # UI Elements
-    ICONS = {
-        "success": "✓",
-        "error": "✗",
-        "warning": "⚠",
-        "info": "ℹ",
-        "arrow": "→",
-        "pointer": "►",
-        "back": "←",
-    }
-    
-    # Panel defaults
-    PANEL = {
-        "box": box.ROUNDED,
-        "padding": (0, 1),
-        "border_padding": (0, 0),
-    }
-    
-    # Animation speeds
-    ANIMATION = {
-        "fast": 0.1,
-        "normal": 0.25,
-        "slow": 0.5,
-    }
-
-
-# Global design tokens instance
-tokens = DesignTokens()
-
-
 class ThemeManager:
     """Manage CLI color themes"""
 
@@ -93,8 +39,6 @@ class ThemeManager:
             "success": "green",
             "error": "red",
             "warning": "yellow",
-            "dim": "dim",
-            "white": "white",
         },
         "dark": {
             "primary": "bright_cyan",
@@ -103,8 +47,6 @@ class ThemeManager:
             "success": "bright_green",
             "error": "bright_red",
             "warning": "bright_yellow",
-            "dim": "dim",
-            "white": "white",
         },
         "light": {
             "primary": "blue",
@@ -113,36 +55,33 @@ class ThemeManager:
             "success": "green",
             "error": "red",
             "warning": "yellow",
-            "dim": "dim",
-            "black": "black",
         },
     }
 
     def __init__(self, theme_name="default"):
         self.theme_name = theme_name
         self.colors = self.THEMES.get(theme_name, self.THEMES["default"])
-        
-        # Add design tokens reference
-        self.tokens = tokens
-    
+
     def get(self, key):
         return self.colors.get(key, "cyan")
-    
-    def style_success(self, text):
-        """Return styled success text."""
-        return f"[{self.colors['success']}]{text}[/{self.colors['success']}]"
-    
-    def style_error(self, text):
-        """Return styled error text."""
-        return f"[{self.colors['error']}]{text}[/{self.colors['error']}]"
-    
-    def style_warning(self, text):
-        """Return styled warning text."""
-        return f"[{self.colors['warning']}]{text}[/{self.colors['warning']}]"
-    
-    def style_primary(self, text):
-        """Return styled primary text."""
-        return f"[{self.colors['primary']}]{text}[/{self.colors['primary']}]"
+
+
+# Global theme instance
+current_theme = ThemeManager()
+
+
+def _load_saved_theme():
+    """Load saved theme from config on startup"""
+    try:
+        from gitpush.config import get_settings
+        saved_theme = get_settings().get("theme", "default")
+        return ThemeManager(saved_theme)
+    except Exception:
+        return ThemeManager("default")
+
+
+# Initialize with saved theme (if available)
+current_theme = _load_saved_theme()
 
 
 def set_theme(theme_name):
@@ -159,26 +98,12 @@ def set_theme(theme_name):
     except Exception:
         pass  # Config may not be available yet
 
-    # Refresh interactive UI styles
+    # Refresh menu styles in interactive UI
     try:
-        from gitpush.ui.interactive import refresh_styles
-        refresh_styles()
+        from gitpush.ui.interactive import refresh_menu_styles
+        refresh_menu_styles()
     except Exception:
         pass
-
-
-def _load_saved_theme():
-    """Load saved theme from config on startup"""
-    try:
-        from gitpush.config import get_settings
-        saved_theme = get_settings().get("theme", "default")
-        return ThemeManager(saved_theme)
-    except Exception:
-        return ThemeManager("default")
-
-
-# Initialize with saved theme (if available)
-current_theme = _load_saved_theme()
 
 
 # Git Logo
@@ -209,18 +134,16 @@ def get_banner(version=None):
 
 def show_banner():
     """Display the run-git banner - simple version (no repeat)"""
-    primary = current_theme.colors["primary"]
-    console.print(f"[bold {primary}]{GIT_LOGO}[/bold {primary}]")
-    console.print(f"\n        [bold {primary}]⚡ RUN-GIT ⚡[/bold {primary}]")
+    console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
+    console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
     console.print(f" [dim]{TAGLINE}[/dim]")
 
 
 def show_banner_with_version():
     """Display banner with version info"""
-    primary = current_theme.colors["primary"]
-    console.print(f"[bold {primary}]{GIT_LOGO}[/bold {primary}]")
-    console.print(f"\n        [bold {primary}]⚡ RUN-GIT ⚡[/bold {primary}]")
+    console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
+    console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
     console.print(f" [dim]{TAGLINE}[/dim]\n")
     console.print(f" [dim]v{__version__}[/dim]")
@@ -232,55 +155,11 @@ def show_success(message):
 
 
 def show_error(message):
-    """Show error message with rich styling"""
+    """Show error message"""
     console.print(f"[X]  {message}", style=f"bold {current_theme.colors['error']}")
 
 
-def show_error_panel(title, message, suggestion=None):
-    """Show error in a rich panel with optional suggestion."""
-    from rich.panel import Panel
-    from rich.text import Text
-    
-    error = current_theme.colors["error"]
-    primary = current_theme.colors["primary"]
-    
-    # Build content
-    content = f"[bold {error}]{message}[/bold {error}]"
-    if suggestion:
-        content += f"\n\n[dim]Tip: {suggestion}[/dim]"
-    
-    panel = Panel(
-        content,
-        title=f"[bold {error}]✗ {title}[/bold {error}]",
-        border_style=error,
-        box=box.ROUNDED,
-    )
-    console.print(panel)
-
-
 def show_warning(message):
-    """Show warning message"""
-    console.print(f"[!]  {message}", style=f"bold {current_theme.colors['warning']}")
-
-
-def show_warning_panel(title, message, suggestion=None):
-    """Show warning in a rich panel with optional suggestion."""
-    from rich.panel import Panel
-    
-    warning = current_theme.colors["warning"]
-    
-    # Build content
-    content = f"[bold {warning}]{message}[/bold {warning}]"
-    if suggestion:
-        content += f"\n\n[dim]Tip: {suggestion}[/dim]"
-    
-    panel = Panel(
-        content,
-        title=f"[bold {warning}]⚠ {title}[/bold {warning}]",
-        border_style=warning,
-        box=box.ROUNDED,
-    )
-    console.print(panel)
     """Show warning message"""
     console.print(f"[!]  {message}", style=f"bold {current_theme.colors['warning']}")
 
@@ -367,8 +246,7 @@ def colorize_status(status):
 # Command suggestion
 def show_suggestion(command, explanation):
     """Show command suggestion"""
-    primary = current_theme.colors["primary"]
-    console.print(f"→ Did you mean: [bold {primary}]{command}[/]? {explanation}")
+    console.print(f"→ Did you mean: [bold cyan]{command}[/]? {explanation}")
 
 
 # Keyboard shortcut display
