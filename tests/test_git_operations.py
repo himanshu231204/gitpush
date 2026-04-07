@@ -6,11 +6,16 @@ import tempfile
 import shutil
 import os
 import sys
+import subprocess
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Configure git user for tests (required for commits/tags in CI)
+subprocess.run(["git", "config", "--global", "user.email", "test@example.com"], capture_output=True)
+subprocess.run(["git", "config", "--global", "user.name", "Test User"], capture_output=True)
 
 from gitpush.core.git_operations import GitOperations
 
