@@ -250,7 +250,11 @@ class TestGitOperationsBranches(unittest.TestCase):
         git_ops.commit("Initial commit")
 
         branches = git_ops.get_branches()
-        self.assertIn("main", branches)
+        # Check for either main or master (platform dependent)
+        self.assertTrue(
+            "main" in branches or "master" in branches,
+            f"Expected 'main' or 'master' in branches, got {branches}"
+        )
 
     def test_create_branch_success(self):
         """Test creating a branch"""

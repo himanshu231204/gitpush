@@ -7,7 +7,6 @@ import click
 from gitpush.core.git_operations import GitOperations
 from gitpush.core.commit_generator import CommitGenerator
 from gitpush.ui.banner import show_info, show_error
-from gitpush.ui.interactive import InteractiveUI
 
 
 @click.command()
