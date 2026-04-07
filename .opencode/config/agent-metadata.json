@@ -64,7 +64,12 @@
         "subagent:coder-agent",
         "subagent:tester",
         "subagent:reviewer",
-        "subagent:build-agent"
+        "subagent:build-agent",
+        "context:openagents-repo-quick-start",
+        "context:openagents-repo-evals",
+        "context:standards-code",
+        "context:standards-tests",
+        "context:workflows-code-review"
       ]
     },
     "system-builder": {
@@ -138,7 +143,13 @@
       "author": "opencode",
       "tags": ["task-breakdown", "planning", "coordination"],
       "dependencies": [
-        "context:task-delegation-basics"
+        "context:task-delegation-basics",
+        "context:task-management-navigation",
+        "context:task-management-task-schema",
+        "context:task-management-splitting-tasks",
+        "context:task-management-managing-tasks",
+        "context:ui-web-styling",
+        "context:workflows-design-iteration-overview"
       ]
     },
     "batch-executor": {
@@ -174,7 +185,9 @@
       "version": "1.0.0",
       "author": "opencode",
       "tags": ["context", "discovery", "search"],
-      "dependencies": []
+      "dependencies": [
+        "context:navigation"
+      ]
     },
     "externalscout": {
       "id": "externalscout",
@@ -204,7 +217,11 @@
       "version": "1.0.0",
       "author": "opencode",
       "tags": ["context", "retrieval", "search"],
-      "dependencies": []
+      "dependencies": [
+        "context:workflows-review",
+        "context:standards-code",
+        "context:standards-tests"
+      ]
     },
     "coder-agent": {
       "id": "coder-agent",
@@ -313,7 +330,14 @@
       "version": "1.0.0",
       "author": "opencode",
       "tags": ["context", "organization", "structure"],
-      "dependencies": []
+      "dependencies": [
+        "context:context-system-operations-harvest",
+        "context:context-system-operations-extract",
+        "context:context-system-operations-organize",
+        "context:context-system-operations-update",
+        "context:context-system-operations-error",
+        "context:context-system-guides-creation"
+      ]
     },
     "workflow-designer": {
       "id": "workflow-designer",
