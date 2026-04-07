@@ -271,22 +271,30 @@ def display_commit_details(details):
     if details["is_merge"]:
         title += " [MERGE COMMIT]"
 
+    # Import current_theme for dynamic colors
+    from gitpush.ui.banner import current_theme
+
+    primary = current_theme.colors["primary"]
+    secondary = current_theme.colors["secondary"]
+    warning = current_theme.colors["warning"]
+    accent = current_theme.colors["accent"]
+
     # Build content
     content = []
-    content.append(f"[bold cyan]Author:[/bold cyan]  {details['author']} <{details['email']}>")
-    content.append(f"[bold cyan]Date:[/bold cyan]    {details['date']}")
+    content.append(f"[bold {primary}]Author:[/bold {primary}]  {details['author']} <{details['email']}>")
+    content.append(f"[bold {primary}]Date:[/bold {primary}]    {details['date']}")
     content.append("")
-    content.append(f"[bold green]Message:[/bold green]")
+    content.append(f"[bold {secondary}]Message:[/bold {secondary}]")
     content.append(details["message"])
     content.append("")
 
     if details["parents"]:
-        content.append(f"[bold yellow]Parents:[/bold yellow]  {' '.join(details['parents'])}")
+        content.append(f"[bold {warning}]Parents:[/bold {warning}]  {' '.join(details['parents'])}")
 
-    content.append(f"[bold magenta]Files:[/bold magenta]  {details['files_changed']}")
+    content.append(f"[bold {accent}]Files:[/bold {accent}]  {details['files_changed']}")
 
     # Create panel
-    panel = Panel("\n".join(content), title=title, border_style="green", box=box.ROUNDED)
+    panel = Panel("\n".join(content), title=title, border_style=secondary, box=box.ROUNDED)
     console.print(panel)
 
     # Show commit summary

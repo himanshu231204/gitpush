@@ -66,14 +66,33 @@ class ThemeManager:
         return self.colors.get(key, "cyan")
 
 
-# Global theme instance
-current_theme = ThemeManager()
-
-
 def set_theme(theme_name):
     """Set the color theme"""
     global current_theme
     current_theme = ThemeManager(theme_name)
+
+    # Persist theme to config
+    try:
+        from gitpush.config import get_settings
+        settings = get_settings()
+        settings.set("theme", theme_name)
+        settings.save()
+    except Exception:
+        pass  # Config may not be available yet
+
+
+def _load_saved_theme():
+    """Load saved theme from config on startup"""
+    try:
+        from gitpush.config import get_settings
+        saved_theme = get_settings().get("theme", "default")
+        return ThemeManager(saved_theme)
+    except Exception:
+        return ThemeManager("default")
+
+
+# Initialize with saved theme (if available)
+current_theme = _load_saved_theme()
 
 
 # Git Logo
@@ -104,16 +123,18 @@ def get_banner(version=None):
 
 def show_banner():
     """Display the run-git banner - simple version (no repeat)"""
-    console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
-    console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
+    primary = current_theme.colors["primary"]
+    console.print(f"[bold {primary}]{GIT_LOGO}[/bold {primary}]")
+    console.print(f"\n        [bold {primary}]⚡ RUN-GIT ⚡[/bold {primary}]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
     console.print(f" [dim]{TAGLINE}[/dim]")
 
 
 def show_banner_with_version():
     """Display banner with version info"""
-    console.print(f"[bold cyan]{GIT_LOGO}[/bold cyan]")
-    console.print(f"\n        [bold cyan]⚡ RUN-GIT ⚡[/bold cyan]")
+    primary = current_theme.colors["primary"]
+    console.print(f"[bold {primary}]{GIT_LOGO}[/bold {primary}]")
+    console.print(f"\n        [bold {primary}]⚡ RUN-GIT ⚡[/bold {primary}]")
     console.print(f"   [bold]Git Operations, Simplified[/bold]\n")
     console.print(f" [dim]{TAGLINE}[/dim]\n")
     console.print(f" [dim]v{__version__}[/dim]")
@@ -216,7 +237,8 @@ def colorize_status(status):
 # Command suggestion
 def show_suggestion(command, explanation):
     """Show command suggestion"""
-    console.print(f"→ Did you mean: [bold cyan]{command}[/]? {explanation}")
+    primary = current_theme.colors["primary"]
+    console.print(f"→ Did you mean: [bold {primary}]{command}[/]? {explanation}")
 
 
 # Keyboard shortcut display

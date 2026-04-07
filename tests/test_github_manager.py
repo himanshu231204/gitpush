@@ -12,7 +12,13 @@ from unittest.mock import patch, MagicMock
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from gitpush.core.github_manager import GitHubManager
+# Mock questionary before importing GitHubManager to prevent hanging
+with patch("gitpush.core.github_manager.questionary") as mock_questionary:
+    mock_questionary.confirm.return_value.ask.return_value = False
+    mock_questionary.password.return_value.ask.return_value = ""
+    mock_questionary.text.return_value.ask.return_value = ""
+    mock_questionary.select.return_value.ask.return_value = ""
+    from gitpush.core.github_manager import GitHubManager
 
 
 class TestGitHubManagerConfig(unittest.TestCase):

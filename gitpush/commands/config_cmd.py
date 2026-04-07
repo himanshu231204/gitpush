@@ -5,7 +5,7 @@ Config command — manage run-git settings including API key.
 import click
 
 from gitpush.config.settings import get_settings
-from gitpush.ui.banner import console, show_error, show_success, show_warning
+from gitpush.ui.banner import console, show_error, show_success, show_warning, current_theme
 from gitpush.utils.license import validate_api_key_format, is_pro_user, UPGRADE_URL
 
 
@@ -19,10 +19,13 @@ def config_cmd():
 @click.argument("api_key")
 def set_api_key(api_key: str):
     """Store your PRO API key."""
+    from gitpush.ui.banner import current_theme
+
+    primary = current_theme.colors["primary"]
     if not validate_api_key_format(api_key):
         show_error("Invalid API key format")
         console.print("  The key must start with [bold]rg_[/bold] and be at least 20 characters.")
-        console.print(f"  Get a valid key from: [bold cyan]{UPGRADE_URL}[/bold cyan]")
+        console.print(f"  Get a valid key from: [bold {primary}]{UPGRADE_URL}[/bold {primary}]")
         return
 
     settings = get_settings()
@@ -37,15 +40,18 @@ def set_api_key(api_key: str):
 def config_status():
     """Show current configuration and license status."""
     settings = get_settings()
+    primary = current_theme.colors["primary"]
+    secondary = current_theme.colors["secondary"]
+    warning = current_theme.colors["warning"]
 
     console.print()
     if is_pro_user():
         key = settings.get("api_key", "")
         masked = key[:6] + "..." + key[-4:] if len(key) > 10 else "****"
-        console.print(f"  License:  [bold green]PRO[/bold green]  (key: {masked})")
+        console.print(f"  License:  [bold {secondary}]PRO[/bold {secondary}]  (key: {masked})")
     else:
-        console.print(f"  License:  [bold yellow]FREE[/bold yellow]")
-        console.print(f"  Upgrade:  [bold cyan]{UPGRADE_URL}[/bold cyan]")
+        console.print(f"  License:  [bold {warning}]FREE[/bold {warning}]")
+        console.print(f"  Upgrade:  [bold {primary}]{UPGRADE_URL}[/bold {primary}]")
 
     console.print(f"  Config:   [dim]{settings.config_path}[/dim]")
     console.print()

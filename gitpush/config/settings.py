@@ -21,6 +21,7 @@ class Settings:
         "auto_detect_sensitive_files": True,
         "show_progress": True,
         "color_output": True,
+        "theme": "default",
         # AI configuration
         "ai_provider": "local",
         "ai_request_timeout": 30,

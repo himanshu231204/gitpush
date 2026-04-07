@@ -126,11 +126,12 @@ def show_repo_context():
 
     if not git_ops.is_git_repo():
         # Show "Not a git repo" message
+        error_color = current_theme.colors["error"]
         panel = Panel(
-            "[bold red]⚠ Not a Git Repository[/bold red]\n"
+            f"[bold {error_color}]⚠ Not a Git Repository[/bold {error_color}]\n"
             "[dim]Run 'run-git init' to initialize or navigate to a git repo[/dim]",
             title="[bold]📁 CONTEXT[/bold]",
-            border_style="red",
+            border_style=error_color,
             box=box.ROUNDED,
         )
         console.print(panel)
@@ -155,16 +156,19 @@ def show_repo_context():
         status_text = f"[yellow]● {total_changes} change(s)[/yellow]"
 
     # Build context info
+    primary = current_theme.colors["primary"]
+    secondary = current_theme.colors["secondary"]
+    accent = current_theme.colors["accent"]
     context_info = (
-        f"[bold cyan]Repo:[/bold cyan] {repo_name}\n"
-        f"[bold green]Branch:[/bold green] {branch_name}\n"
-        f"[bold magenta]Status:[/bold magenta] {status_text}"
+        f"[bold {primary}]Repo:[/bold {primary}] {repo_name}\n"
+        f"[bold {secondary}]Branch:[/bold {secondary}] {branch_name}\n"
+        f"[bold {accent}]Status:[/bold {accent}] {status_text}"
     )
 
     panel = Panel(
         context_info,
         title="[bold]📁 CONTEXT[/bold]",
-        border_style="cyan",
+        border_style=primary,
         box=box.ROUNDED,
     )
     console.print(panel)
@@ -335,7 +339,8 @@ class InteractiveUI:
                 # In main menu, "back" just continues the loop
                 continue
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 break
 
             # Handle empty choice
@@ -344,7 +349,8 @@ class InteractiveUI:
 
             # Handle menu choice
             if "Exit" in choice or "Quit" in choice:
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 break
 
             # Execute based on selection
@@ -497,7 +503,8 @@ class InteractiveUI:
             if key == "back":
                 break
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 return
 
             choice_map = {
@@ -629,7 +636,8 @@ class InteractiveUI:
             if key == "back":
                 return
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 return
 
             choice_map = {
@@ -683,7 +691,8 @@ class InteractiveUI:
             if key == "back":
                 return
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 return
 
             choice_map = {
@@ -779,7 +788,8 @@ class InteractiveUI:
             if key == "back":
                 break
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 return
 
             choice_map = {
@@ -1296,7 +1306,8 @@ class InteractiveUI:
             if key == "back":
                 break
             elif key == "quit":
-                console.print("\n[bold cyan]Goodbye! 👋[/bold cyan]\n")
+                primary = current_theme.colors["primary"]
+                console.print(f"\n[bold {primary}]Goodbye! 👋[/bold {primary}]\n")
                 return
 
             choice_map = {
@@ -1427,12 +1438,16 @@ class InteractiveUI:
         deleted_count = len(status.get("deleted", []))
 
         # Create a summary stats row
+        primary = current_theme.colors["primary"]
+        secondary = current_theme.colors["secondary"]
+        warning = current_theme.colors["warning"]
+        error = current_theme.colors["error"]
         stats_panel = Panel(
-            f"[bold cyan]Branch:[/bold cyan] {status.get('branch', 'N/A')}\n"
-            f"[bold green]✓ Staged:[/bold green] {staged_count}  |  "
-            f"[bold yellow]✏️  Modified:[/bold yellow] {modified_count}  |  "
-            f"[bold red]🗑️  Deleted:[/bold red] {deleted_count}  |  "
-            f"[bold blue]🆕 Untracked:[/bold blue] {untracked_count}",
+            f"[bold {primary}]Branch:[/bold {primary}] {status.get('branch', 'N/A')}\n"
+            f"[bold {secondary}]✓ Staged:[/bold {secondary}] {staged_count}  |  "
+            f"[bold {warning}]✏️  Modified:[/bold {warning}] {modified_count}  |  "
+            f"[bold {error}]🗑️  Deleted:[/bold {error}] {deleted_count}  |  "
+            f"[bold {primary}]🆕 Untracked:[/bold {primary}] {untracked_count}",
             title="[bold]📊 REPOSITORY STATUS[/bold]",
             border_style=current_theme.colors["primary"],
             box=box.ROUNDED,
@@ -1448,7 +1463,8 @@ class InteractiveUI:
             pad_edge=False,
             expand=True,
         )
-        table.add_column("Status", style="cyan", width=12)
+        primary = current_theme.colors["primary"]
+        table.add_column("Status", style=primary, width=12)
         table.add_column("Files", style="white", justify="left")
 
         # Zebra striping with alternating styles
@@ -1587,14 +1603,15 @@ class InteractiveUI:
             show_info("No remotes configured")
             return
 
+        primary = current_theme.colors["primary"]
         table = Table(
             title="🔗 Remote Repositories",
             show_header=True,
-            header_style=f"bold {current_theme.colors['primary']}",
-            border_style=current_theme.colors["primary"],
+            header_style=f"bold {primary}",
+            border_style=primary,
             box=box.ROUNDED,
         )
-        table.add_column("Name", style="cyan", width=15)
+        table.add_column("Name", style=primary, width=15)
         table.add_column("URL", style="white")
 
         for idx, remote in enumerate(remotes):
@@ -1602,12 +1619,12 @@ class InteractiveUI:
 
             if row_style:
                 table.add_row(
-                    f"[{row_style}][bold cyan]{remote.name}[/bold cyan][/{row_style}]",
+                    f"[{row_style}][bold {primary}]{remote.name}[/bold {primary}][/{row_style}]",
                     f"[{row_style}]{remote.url}[/{row_style}]",
                 )
             else:
                 table.add_row(
-                    f"[bold cyan]{remote.name}[/bold cyan]",
+                    f"[bold {primary}]{remote.name}[/bold {primary}]",
                     remote.url,
                 )
 
@@ -1622,14 +1639,16 @@ class InteractiveUI:
             show_info("No tags found")
             return
 
+        primary = current_theme.colors["primary"]
+        warning = current_theme.colors["warning"]
         table = Table(
             title="🏷️  Tags",
             show_header=True,
-            header_style=f"bold {current_theme.colors['primary']}",
-            border_style=current_theme.colors["primary"],
+            header_style=f"bold {primary}",
+            border_style=primary,
             box=box.ROUNDED,
         )
-        table.add_column("Tag Name", style="yellow", width=30)
+        table.add_column("Tag Name", style=warning, width=30)
         table.add_column("Commit", style="white", width=12)
 
         for idx, tag in enumerate(tags):
@@ -1638,12 +1657,12 @@ class InteractiveUI:
 
             if row_style:
                 table.add_row(
-                    f"[{row_style}][bold yellow]{tag.name}[/bold yellow][/{row_style}]",
+                    f"[{row_style}][bold {warning}]{tag.name}[/bold {warning}][/{row_style}]",
                     f"[{row_style}]{commit_sha}[/{row_style}]",
                 )
             else:
                 table.add_row(
-                    f"[bold yellow]{tag.name}[/bold yellow]",
+                    f"[bold {warning}]{tag.name}[/bold {warning}]",
                     commit_sha,
                 )
 
