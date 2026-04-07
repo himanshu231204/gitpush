@@ -8,17 +8,24 @@ import os
 import sys
 from pathlib import Path
 from unittest.mock import patch, MagicMock
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Mock questionary before importing GitHubManager to prevent hanging
-with patch("gitpush.core.github_manager.questionary") as mock_questionary:
-    mock_questionary.confirm.return_value.ask.return_value = False
-    mock_questionary.password.return_value.ask.return_value = ""
-    mock_questionary.text.return_value.ask.return_value = ""
-    mock_questionary.select.return_value.ask.return_value = ""
-    from gitpush.core.github_manager import GitHubManager
+# This must be done at module level to prevent tests from hanging
+_patcher = patch("gitpush.core.github_manager.questionary")
+_mock_questionary = _patcher.start()
+_mock_questionary.confirm.return_value.ask.return_value = False
+_mock_questionary.password.return_value.ask.return_value = ""
+_mock_questionary.text.return_value.ask.return_value = ""
+_mock_questionary.select.return_value.ask.return_value = ""
+
+from gitpush.core.github_manager import GitHubManager
+
+# Stop the patcher after import to prevent issues
+_patcher.stop()
 
 
 class TestGitHubManagerConfig(unittest.TestCase):
@@ -146,15 +153,21 @@ class TestGitHubManagerHelpers(unittest.TestCase):
         mock_user = MagicMock()
         mock_gh_instance.get_user.return_value = mock_user
         
-        # Return MagicMock for every call - repo always exists
-        mock_user.get_repo.return_value = MagicMock()
+        # Counter to make repo exist 3 times then not exist
+        call_count = [0]
+        def mock_get_repo(name):
+            call_count[0] += 1
+            if call_count[0] <= 3:
+                return MagicMock()  # repo exists
+            raise Exception("Not found")  # repo doesn't exist
+        
+        mock_user.get_repo.side_effect = mock_get_repo
 
         gh = GitHubManager()
         gh.github = mock_gh_instance
 
-        # The function will loop until it finds a name that doesn't exist
-        # Since our mock always returns "exists", it will keep incrementing
-        # We just verify it returns a properly formatted name
+        # The function will try test-repo, test-repo-1, test-repo-2, then test-repo-3
+        # At test-repo-3, repo doesn't exist, so it returns that
         suggested = gh.suggest_repo_name("test-repo")
         self.assertTrue(suggested.startswith("test-repo-"))
 
