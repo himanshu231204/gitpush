@@ -22,6 +22,9 @@ class Settings:
         "show_progress": True,
         "color_output": True,
         "theme": "default",
+        "ui_layout": "compact_dashboard",
+        "ui_density": "compact",
+        "ui_accent": "theme",
         # AI configuration
         "ai_provider": "local",
         "ai_request_timeout": 30,

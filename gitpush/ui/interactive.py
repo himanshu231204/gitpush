@@ -21,6 +21,7 @@ from rich import box
 from rich.style import Style
 from rich.rule import Rule
 from gitpush.ui.banner import current_theme, show_shortcuts, show_success, show_error, show_info
+from gitpush.ui.renderer import CompactDashboardRenderer, MenuSection, MenuItem
 from gitpush.ui.help_docs import (
     CLI_COMMANDS,
     MENU_SHORTCUTS,
@@ -41,6 +42,7 @@ from gitpush.config.settings import get_settings
 from gitpush.ai.config import AIConfig
 
 console = Console()
+renderer = CompactDashboardRenderer(console)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # DYNAMIC QUESTIONARY STYLES (Theme-aware)
@@ -472,24 +474,26 @@ def refresh_menu_styles():
 
 def show_repo_context():
     """Display repository context info at the top of the menu"""
+    import os
     from gitpush.core.git_operations import GitOperations
 
     git_ops = GitOperations()
 
     if not git_ops.is_git_repo():
-        # Show "Not a git repo" message
-        panel = Panel(
-            "[bold red]⚠ Not a Git Repository[/bold red]\n"
-            "[dim]Run 'run-git init' to initialize or navigate to a git repo[/dim]",
-            title="[bold]📁 CONTEXT[/bold]",
-            border_style="red",
-            box=box.ROUNDED,
+        renderer.render_repo_context(
+            repo_name="-",
+            branch_name="-",
+            total_changes=0,
+            is_repo=False,
+            border_color="red",
         )
-        console.print(panel)
         return None
 
     # Get repo info
-    repo_name = git_ops.repo.working_dir.split("/")[-1] if git_ops.repo.working_dir else "Unknown"
+    if git_ops.repo.working_dir:
+        repo_name = os.path.basename(git_ops.repo.working_dir.rstrip("\\/")) or "Unknown"
+    else:
+        repo_name = "Unknown"
     branch_name = git_ops.repo.active_branch.name if git_ops.repo.active_branch else "main"
     status_data = git_ops.get_status()
 
@@ -501,25 +505,13 @@ def show_repo_context():
         + len(status_data.get("deleted", []))
     )
 
-    if total_changes == 0:
-        status_text = "[green]✓ Clean[/green]"
-    else:
-        status_text = f"[yellow]● {total_changes} change(s)[/yellow]"
-
-    # Build context info
-    context_info = (
-        f"[bold cyan]Repo:[/bold cyan] {repo_name}\n"
-        f"[bold green]Branch:[/bold green] {branch_name}\n"
-        f"[bold magenta]Status:[/bold magenta] {status_text}"
+    renderer.render_repo_context(
+        repo_name=repo_name,
+        branch_name=branch_name,
+        total_changes=total_changes,
+        is_repo=True,
+        border_color="cyan",
     )
-
-    panel = Panel(
-        context_info,
-        title="[bold]📁 CONTEXT[/bold]",
-        border_style="cyan",
-        box=box.ROUNDED,
-    )
-    console.print(panel)
 
 
 def show_premium_menu(
@@ -541,44 +533,21 @@ def show_premium_menu(
     Returns:
         Selected option key, "back", "quit", or empty string
     """
-    # Display header panel
-    panel = Panel(
-        "[bold]Smart Git CLI for Developers[/bold]",
-        title=f"[bold]{title}[/bold]",
-        border_style=border_color,
-        box=box.DOUBLE,
-    )
-    console.print(panel)
-
-    # Display breadcrumb if provided
-    if breadcrumb:
-        console.print(f"[dim]{breadcrumb}[/dim]")
-
-    console.print()
-
     # Collect all items from all sections
     all_items = []
+    compact_sections = []
     for section in sections:
-        all_items.extend(section.get("items", []))
-
-    # Empty state handling
-    if not all_items:
-        console.print("[dim]No actions available[/dim]")
-        console.print()
-
-    # Build choices for questionary (only - no static display)
-    all_choices = []
-    choice_map = {}
-
-    for section in sections:
+        section_items = []
         for key, icon, label, desc in section.get("items", []):
-            # Style Back option differently
-            if key == "b":
-                choice_text = f"{icon} {label}   →   {desc}"
-            else:
-                choice_text = f"{icon} {label}   →   {desc}"
-            choice_map[choice_text] = key
-            all_choices.append(choice_text)
+            all_items.append((key, icon, label, desc))
+            section_items.append(MenuItem(key=key, icon=icon, label=label, description=desc))
+        compact_sections.append(MenuSection(title=section.get("title", "MENU"), items=section_items))
+
+    if not all_items:
+        console.print("[dim]No actions available[/dim]\n")
+        return ""
+
+    renderer.render_header(title=title, border_color=border_color, breadcrumb=breadcrumb)
 
     # Style map for different menus
     style_map = {
@@ -589,24 +558,10 @@ def show_premium_menu(
         "blue": SETTINGS_MENU_STYLE,
     }
 
-    # Use questionary with arrow key navigation
-    selected = questionary.select(
-        "",
-        choices=all_choices,
-        qmark="▶",
-        pointer="►",
+    return renderer.select_menu(
+        compact_sections,
         style=style_map.get(border_color, MAIN_MENU_STYLE),
-    ).ask()
-
-    if selected:
-        key = choice_map.get(selected, "")
-        # Handle special keys
-        if key == "b":
-            return "back"
-        elif key == "q":
-            return "quit"
-        return key
-    return ""
+    )
 
 
 class InteractiveUI:
