@@ -49,9 +49,10 @@ def is_compact_ui_enabled() -> bool:
     """Return whether compact dashboard layout is enabled."""
     try:
         settings = get_settings()
-        return settings.get("ui_layout", "compact_dashboard") == "compact_dashboard"
+        return settings.get("ui_layout", "legacy") == "compact_dashboard"
     except Exception:
-        return True
+        return False
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # DYNAMIC QUESTIONARY STYLES (Theme-aware)
@@ -997,7 +998,7 @@ class InteractiveUI:
         """Show settings menu"""
         while True:
             settings = get_settings()
-            current_ui_mode = settings.get("ui_layout", "compact_dashboard")
+            current_ui_mode = settings.get("ui_layout", "textual")
 
             # Define menu sections
             settings_sections = [
@@ -1009,7 +1010,7 @@ class InteractiveUI:
                             "2",
                             "🖥️",
                             "UI Mode",
-                            f"Current: {'Compact' if current_ui_mode == 'compact_dashboard' else 'Legacy'}",
+                            f"Current: {'Textual' if current_ui_mode == 'textual' else 'Legacy'}",
                         ),
                         ("3", "📋", "View Config", "Show current configuration"),
                         ("b", "⬅️", "Back", "Return to main menu"),
@@ -1017,9 +1018,7 @@ class InteractiveUI:
                 },
             ]
 
-            key = show_premium_menu(
-                "Settings", settings_sections, "blue", "Main Menu > Settings"
-            )
+            key = show_premium_menu("Settings", settings_sections, "blue", "Main Menu > Settings")
 
             # Handle special navigation keys
             if key == "back":
@@ -1057,7 +1056,7 @@ class InteractiveUI:
                 ui_mode_choice = questionary.select(
                     "Select UI mode:",
                     choices=[
-                        "compact_dashboard  - Compact Claude-like dashboard",
+                        "textual            - Modern Textual UI",
                         "legacy             - Classic menu layout",
                     ],
                     qmark=">",
@@ -1070,8 +1069,8 @@ class InteractiveUI:
                     settings.set("ui_layout", selected_mode)
                     settings.save()
                     show_success(
-                        "UI mode switched to 'Compact'"
-                        if selected_mode == "compact_dashboard"
+                        "UI mode switched to 'Textual'"
+                        if selected_mode == "textual"
                         else "UI mode switched to 'Legacy'"
                     )
                 continue
@@ -1082,7 +1081,7 @@ class InteractiveUI:
                     "\n".join(
                         [
                             f"[bold cyan]theme[/bold cyan]: {all_settings.get('theme', 'default')}",
-                            f"[bold cyan]ui_layout[/bold cyan]: {all_settings.get('ui_layout', 'compact_dashboard')}",
+                            f"[bold cyan]ui_layout[/bold cyan]: {all_settings.get('ui_layout', 'textual')}",
                             f"[bold cyan]ui_density[/bold cyan]: {all_settings.get('ui_density', 'compact')}",
                             f"[bold cyan]ai_provider[/bold cyan]: {all_settings.get('ai_provider', 'local')}",
                             f"[bold cyan]default_remote[/bold cyan]: {all_settings.get('default_remote', 'origin')}",

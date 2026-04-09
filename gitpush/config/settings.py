@@ -22,7 +22,7 @@ class Settings:
         "show_progress": True,
         "color_output": True,
         "theme": "default",
-        "ui_layout": "compact_dashboard",
+        "ui_layout": "textual",
         "ui_density": "compact",
         "ui_accent": "theme",
         # AI configuration
@@ -103,6 +103,10 @@ class Settings:
 
         if not self._config.get("ai_anthropic_model"):
             self._config["ai_anthropic_model"] = "claude-sonnet-4-20250514"
+
+        # Migrate previous interactive layout values to new modes.
+        if self._config.get("ui_layout") == "compact_dashboard":
+            self._config["ui_layout"] = "legacy"
 
     def save(self) -> None:
         try:

@@ -1,0 +1,74 @@
+Screen {
+    background: #0f1117;
+    color: #d8dee9;
+}
+
+#app-header {
+    dock: top;
+    height: 3;
+    content-align: left middle;
+    background: #151a22;
+    color: #e6edf3;
+    border-bottom: solid #2d3748;
+    padding: 0 2;
+}
+
+#app-footer {
+    dock: bottom;
+    height: 1;
+    background: #151a22;
+    color: #93a0b3;
+    padding: 0 2;
+}
+
+#main-layout {
+    height: 1fr;
+}
+
+#sidebar {
+    width: 42;
+    border-right: solid #2d3748;
+    background: #11161f;
+    padding: 1;
+}
+
+#content {
+    width: 1fr;
+    padding: 1;
+}
+
+#command-search {
+    margin-bottom: 1;
+    background: #1a2230;
+    border: solid #2d3748;
+}
+
+#command-list {
+    height: 1fr;
+    background: #11161f;
+    color: #c9d4e3;
+}
+
+#command-list > .option-list--option-highlighted {
+    background: #233047;
+    color: #ffffff;
+    text-style: bold;
+}
+
+#output-panel {
+    background: #0f1117;
+}
+
+#output-loading {
+    height: auto;
+    margin-bottom: 1;
+    color: #7aa2f7;
+}
+
+#output-log {
+    height: 1fr;
+    border: solid #2d3748;
+    background: #0f141d;
+    color: #d8dee9;
+    padding: 1;
+}

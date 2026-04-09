@@ -32,6 +32,7 @@ setup(
         "GitPython>=3.1.0",
         "PyGithub>=1.59.0",
         "questionary>=1.10.0",
+        "textual>=0.80.0",
         "pyyaml>=6.0",
         "requests>=2.28.0",
     ],

@@ -5,6 +5,7 @@ Main CLI interface for run-git - Git Made Easy
 import click
 
 from gitpush import __version__
+from gitpush.config.settings import get_settings
 from gitpush.ui.banner import show_banner
 from gitpush.commands import (
     push,
@@ -43,10 +44,24 @@ def main(ctx, version):
 
     if ctx.invoked_subcommand is None:
         show_banner()
-        from gitpush.ui.interactive import InteractiveUI
+        settings = get_settings()
+        ui_layout = settings.get("ui_layout", "textual")
 
-        interactive_mode = InteractiveUI()
-        interactive_mode.main_menu()
+        if ui_layout == "legacy":
+            from gitpush.ui.interactive import InteractiveUI
+
+            InteractiveUI.main_menu()
+            return
+
+        try:
+            from gitpush.tui.app import run_textual_app
+
+            run_textual_app()
+        except Exception:
+            click.echo("Failed to launch Textual UI. Falling back to legacy menu.")
+            from gitpush.ui.interactive import InteractiveUI
+
+            InteractiveUI.main_menu()
 
 
 # Register commands
